@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="https://openclaw.ai/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="https://openclaw.ai/favicon-32.png" />
+    <link rel="apple-touch-icon" href="https://openclaw.ai/apple-touch-icon.png" />
+    <title>OpenClaw 俱乐部 - 全网最简单安装</title>
+    <meta
+      name="description"
+      content="OpenClaw 俱乐部专注分享 OpenClaw 相关信息，提供全网最简单安装指南。"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #121416;
+        --ink-soft: #4c5663;
+        --accent: #ff6a3d;
+        --accent-dark: #d64b24;
+        --cream: #fff6e6;
+        --mist: #f2f4f7;
+        --leaf: #1f7a62;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
+        color: var(--ink);
+        background: radial-gradient(circle at top left, #ffe7ce, #ffffff 55%),
+          linear-gradient(135deg, #fffdf7, #f2f6fb);
+        min-height: 100vh;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      header {
+        padding: 32px clamp(20px, 6vw, 72px) 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .brand-logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+        background: white;
+        padding: 8px;
+        box-shadow: 0 10px 20px rgba(18, 20, 22, 0.12);
+      }
+
+      .brand-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+
+      .tag {
+        font-size: 0.85rem;
+        color: var(--ink-soft);
+      }
+
+      main {
+        flex: 1;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 32px;
+        padding: 48px clamp(20px, 6vw, 72px);
+        align-items: center;
+      }
+
+      .hero {
+        display: grid;
+        gap: 20px;
+        animation: fadeUp 0.8s ease-out both;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.2rem, 4vw, 3.2rem);
+        line-height: 1.15;
+      }
+
+      .hero p {
+        font-size: 1.05rem;
+        color: var(--ink-soft);
+        line-height: 1.7;
+        max-width: 36rem;
+      }
+
+      .cta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+
+      .cta a {
+        padding: 12px 20px;
+        border-radius: 999px;
+        font-size: 1rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .cta .primary {
+        background: var(--accent);
+        color: white;
+        box-shadow: 0 12px 24px rgba(255, 106, 61, 0.3);
+      }
+
+      .cta .secondary {
+        border: 1px solid var(--ink);
+        color: var(--ink);
+        background: white;
+      }
+
+      .cta a:hover {
+        transform: translateY(-2px);
+      }
+
+      .card-grid {
+        display: grid;
+        gap: 16px;
+      }
+
+      .card {
+        background: white;
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 16px 32px rgba(18, 20, 22, 0.08);
+        animation: fadeUp 0.8s ease-out both;
+      }
+
+      .card:nth-child(2) {
+        animation-delay: 0.1s;
+      }
+
+      .card:nth-child(3) {
+        animation-delay: 0.2s;
+      }
+
+      .card h3 {
+        font-size: 1.1rem;
+        margin-bottom: 10px;
+      }
+
+      .card p {
+        color: var(--ink-soft);
+        line-height: 1.6;
+        font-size: 0.95rem;
+      }
+
+      .highlight {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.95rem;
+        color: var(--leaf);
+        background: var(--cream);
+        padding: 6px 12px;
+        border-radius: 999px;
+        width: fit-content;
+      }
+
+      footer {
+        padding: 24px clamp(20px, 6vw, 72px) 36px;
+        color: var(--ink-soft);
+        font-size: 0.9rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .footer-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--ink);
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @media (max-width: 720px) {
+        header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
+
+        .cta {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .cta a {
+          width: 100%;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="brand">
+          <img
+            class="brand-logo"
+            src="https://openclaw.ai/favicon.svg"
+            alt="OpenClaw logo"
+            width="48"
+            height="48"
+          />
+          <div>
+            <div class="brand-name">OpenClaw 俱乐部</div>
+            <div class="tag">openclaw.club</div>
+          </div>
+        </div>
+        <div class="highlight">全网最简单安装指南</div>
+      </header>
+
+      <main>
+        <section class="hero">
+          <h1>
+            把 OpenClaw 装好，
+            <br />
+            让你的自动化马上起飞。
+          </h1>
+          <p>
+            OpenClaw 俱乐部是 OpenClaw 的中文社区，主要分享安装、使用、新闻、文档等
+            OpenClaw 周边信息。我们整理了最简洁的安装路径，让你一步到位，快速开启你的机器人工作流。
+          </p>
+          <div class="cta">
+            <a class="primary" href="/quick-start.html">立即查看安装指南</a>
+            <a class="secondary" href="https://docs.openclaw.ai/zh-CN" target="_blank" rel="noopener noreferrer">
+              中文文档
+            </a>
+          </div>
+        </section>
+
+        <section class="card-grid">
+          <div class="card">
+            <h3>社区内容覆盖全面</h3>
+            <p>
+              安装与使用教程、新闻更新、官方文档和周边资源一站式整理，打开就能用。
+            </p>
+          </div>
+          <div class="card">
+            <h3>上手路径更简单</h3>
+            <p>
+              从下载安装到常见问题的处理，我们把步骤拆解成清晰的流程，让你少走弯路。
+            </p>
+          </div>
+          <div class="card">
+            <h3>跟进 OpenClaw 动态</h3>
+            <p>
+              关注新功能、版本更新和生态工具，把有价值的信息集中在一个入口。
+            </p>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <div>openclaw.club · OpenClaw 俱乐部</div>
+        <a class="footer-link" href="/quick-start.html">打开安装指南 →</a>
+      </footer>
+    </div>
+  </body>
+</html>
