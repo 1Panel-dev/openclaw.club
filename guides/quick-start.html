@@ -237,6 +237,24 @@
         color: var(--ink-soft);
       }
 
+      .qr-box {
+        display: grid;
+        justify-items: center;
+        gap: 12px;
+        text-align: center;
+      }
+
+      .qr-box img {
+        width: 200px;
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        border: 1px solid rgba(17, 19, 23, 0.08);
+        box-shadow: 0 8px 16px rgba(17, 19, 23, 0.08);
+        background: white;
+        padding: 8px;
+      }
+
       footer {
         margin-top: 24px;
         color: var(--ink-soft);
@@ -278,7 +296,7 @@
         <nav class="nav">
           <a href="/">返回首页</a>
           <a href="https://docs.openclaw.ai/zh-CN" target="_blank" rel="noopener noreferrer">中文文档</a>
-          <a class="primary" href="https://openclaw.club/quick-start.html">快速安装</a>
+          <a class="primary" href="/guides/quick-start.html">快速安装</a>
         </nav>
       </header>
 
@@ -332,9 +350,9 @@
             <p>步骤七：进入“面板设置”，将默认访问地址设置为1Panel公网IP。</p>
             <div class="figure">
               <div class="image-grid">
-                <img src="images/1panel-install.png" alt="1Panel安装" />
-                <img src="images/1panel-login.png" alt="1Panel登录" />
-                <img src="images/1panel-setup.png" alt="1Panel设置" />
+                <img src="../images/1panel-install.png" alt="1Panel安装" />
+                <img src="../images/1panel-login.png" alt="1Panel登录" />
+                <img src="../images/1panel-setup.png" alt="1Panel设置" />
               </div>
               <div class="caption">1Panel安装与登录界面。</div>
             </div>
@@ -366,8 +384,8 @@
             <p>安装完成后，在“已安装”页面点击“跳转”，出现“Ollamaisrunning”即部署成功。</p>
             <div class="figure">
               <div class="image-grid">
-                <img src="images/app-install-ollama.png" alt="Ollama安装参数" />
-                <img src="images/ollama-running.png" alt="Ollama运行状态" />
+                <img src="../images/app-install-ollama.png" alt="Ollama安装参数" />
+                <img src="../images/ollama-running.png" alt="Ollama运行状态" />
               </div>
               <div class="caption">Ollama安装参数与运行状态。</div>
             </div>
@@ -394,7 +412,7 @@
             </ul>
             <div class="figure">
               <div class="image-grid">
-                <img src="images/openclaw-install.png" alt="OpenClaw安装参数" />
+                <img src="../images/openclaw-install.png" alt="OpenClaw安装参数" />
               </div>
             </div>
             <p>安装完成后，进入“已安装”页面点击“进入目录”，打开data/conf/openclaw.json，复制gateway.token值。</p>
@@ -402,8 +420,8 @@
             <div class="code">139.186.147.190:18789?token=9bfd07dd800a8c304b62bfac09f698cb7ad9f939d812021a</div>
             <div class="figure">
               <div class="image-grid">
-                <img src="images/openclaw-params.png" alt="OpenClaw参数配置" />
-                <img src="images/openclaw-setup-url.png" alt="OpenClaw应用安装" />
+                <img src="../images/openclaw-params.png" alt="OpenClaw参数配置" />
+                <img src="../images/openclaw-setup-url.png" alt="OpenClaw应用安装" />
               </div>
             </div>
           </div>
@@ -420,8 +438,8 @@
         </p>
         <div class="figure">
           <div class="image-grid">
-            <img src="images/openclaw-chat.png" alt="OpenClaw对话" />
-            <img src="images/openclaw-barve-search.png" alt="BraveSearch配置" />
+            <img src="../images/openclaw-chat.png" alt="OpenClaw对话" />
+            <img src="../images/openclaw-barve-search.png" alt="BraveSearch配置" />
           </div>
           <div class="caption">OpenClaw对话与联网搜索配置。</div>
         </div>
@@ -435,6 +453,14 @@
         <p>
           这套本地化AI助理方案无需外部Token，隐私更有保障，欢迎动手实操体验开源三件套带来的高效智能服务。
         </p>
+      </section>
+
+      <section class="section">
+        <h2>六、加入企业微信社群</h2>
+        <p>扫码加入 OpenClaw 俱乐部企业微信群，获取安装答疑、版本更新和使用交流。</p>
+        <div class="qr-box">
+          <img src="../images/workweixin.png" alt="OpenClaw 俱乐部企业微信二维码" />
+        </div>
       </section>
 
       <footer>

@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="https://openclaw.ai/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="https://openclaw.ai/favicon-32.png" />
+    <link rel="apple-touch-icon" href="https://openclaw.ai/apple-touch-icon.png" />
+    <title>OpenClaw 飞书平台配置教程</title>
+    <meta
+      name="description"
+      content="提炼自 OpenClaw 官方文档的飞书开放平台操作指南，快速完成机器人应用创建与发布。"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #111317;
+        --ink-soft: #46505c;
+        --accent: #ff6a3d;
+        --accent-dark: #d64b24;
+        --cream: #fff6e6;
+        --mist: #f3f5f8;
+        --leaf: #1f7a62;
+        --border: rgba(17, 19, 23, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
+        color: var(--ink);
+        background: radial-gradient(circle at top left, #ffe7ce, #ffffff 55%),
+          linear-gradient(135deg, #fffdf7, #f2f6fb);
+        min-height: 100vh;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 32px clamp(20px, 6vw, 72px) 64px;
+      }
+
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .brand-logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+        background: white;
+        padding: 8px;
+        box-shadow: 0 10px 20px rgba(18, 20, 22, 0.12);
+      }
+
+      .brand-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+
+      .note {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--cream);
+        color: var(--leaf);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 0.95rem;
+        width: fit-content;
+      }
+
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .nav a {
+        padding: 10px 16px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: white;
+        font-size: 0.95rem;
+      }
+
+      .nav .primary {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+        box-shadow: 0 10px 20px rgba(255, 106, 61, 0.3);
+      }
+
+      .hero {
+        display: grid;
+        gap: 18px;
+        padding: 32px;
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 16px 32px rgba(18, 20, 22, 0.08);
+        margin-bottom: 28px;
+      }
+
+      .hero h1 {
+        font-size: clamp(2rem, 4vw, 2.8rem);
+        line-height: 1.2;
+      }
+
+      .hero p {
+        color: var(--ink-soft);
+        line-height: 1.7;
+        font-size: 1.02rem;
+      }
+
+      .section {
+        background: white;
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 14px 28px rgba(18, 20, 22, 0.07);
+        margin-bottom: 22px;
+      }
+
+      .section h2 {
+        font-size: 1.4rem;
+        margin-bottom: 14px;
+      }
+
+      .section p {
+        color: var(--ink-soft);
+        line-height: 1.7;
+        font-size: 0.98rem;
+        margin-bottom: 12px;
+      }
+
+      .section ul,
+      .section ol {
+        padding-left: 18px;
+        color: var(--ink-soft);
+        line-height: 1.7;
+        font-size: 0.98rem;
+      }
+
+      .section li {
+        margin-bottom: 6px;
+      }
+
+      .steps {
+        display: grid;
+        gap: 16px;
+      }
+
+      .step {
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 18px 20px;
+        background: var(--mist);
+      }
+
+      .step h3 {
+        font-size: 1.02rem;
+        margin-bottom: 10px;
+      }
+
+      .code {
+        background: #111317;
+        color: #f5f6f7;
+        border-radius: 12px;
+        padding: 14px 16px;
+        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
+        font-size: 0.88rem;
+        line-height: 1.6;
+        overflow-x: auto;
+        margin: 10px 0 14px;
+      }
+
+      .figure {
+        border: 1px dashed var(--border);
+        border-radius: 16px;
+        padding: 14px;
+        background: #fffaf2;
+        margin: 12px 0 16px;
+      }
+
+      .figure img {
+        width: 100%;
+        height: auto;
+        border-radius: 12px;
+        border: 1px solid rgba(17, 19, 23, 0.08);
+        box-shadow: 0 8px 16px rgba(17, 19, 23, 0.08);
+      }
+
+      .caption {
+        margin-top: 8px;
+        font-size: 0.88rem;
+        color: var(--ink-soft);
+      }
+
+      footer {
+        margin-top: 24px;
+        color: var(--ink-soft);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 0.92rem;
+      }
+
+      @media (max-width: 720px) {
+        .hero,
+        .section {
+          padding: 22px;
+        }
+
+        .nav a {
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="brand">
+          <img
+            class="brand-logo"
+            src="https://openclaw.ai/favicon.svg"
+            alt="OpenClaw logo"
+            width="48"
+            height="48"
+          />
+          <div>
+            <div class="brand-name">OpenClaw 俱乐部</div>
+            <div class="note">飞书开放平台实操步骤</div>
+          </div>
+        </div>
+        <nav class="nav">
+          <a href="/">返回首页</a>
+          <a href="/guides/quick-start.html">快速安装</a>
+          <a class="primary" href="https://docs.openclaw.ai/zh-CN/channels/feishu" target="_blank" rel="noopener noreferrer">官方文档</a>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <h1>OpenClaw 飞书平台配置指南</h1>
+        <p>
+          快速配置飞书机器人，实现消息接收与发送。
+        </p>
+      </section>
+
+      <section class="section">
+        <h2>一、开始前确认</h2>
+        <p>在进入飞书开放平台前，建议先在服务器完成以下前置步骤。</p>
+        <ol>
+          <li>在 1Panel 平台安装 OpenClaw </li>
+        </ol>
+      </section>
+
+      <section class="section">
+        <h2>二、操作步骤</h2>
+        <div class="steps">
+          <div class="step">
+            <h3>1）创建企业自建应用</h3>
+            <p>
+              打开飞书开放平台 <a href="https://open.feishu.cn/app" target="_blank" rel="noopener noreferrer">https://open.feishu.cn/app</a>，点击“创建企业自建应用”，填写名称、描述和图标。
+            </p>
+            <div class="figure">
+              <img src="https://mintcdn.com/clawdhub/6NERQ7Dymau_gJ4k/images/feishu-step2-create-app.png?fit=max&auto=format&n=6NERQ7Dymau_gJ4k&q=85&s=a3d0a511fea278250c353f5c33f03584" alt="飞书创建企业自建应用" loading="lazy" />
+              <div class="caption">飞书后台创建应用入口。</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <h3>2）复制应用凭证</h3>
+            <p>进入“凭证与基础信息”，复制并保存 App ID（例如 <code>cli_xxx</code>）和 App Secret。</p>
+            <div class="figure">
+              <img src="https://mintcdn.com/clawdhub/6NERQ7Dymau_gJ4k/images/feishu-step3-credentials.png?fit=max&auto=format&n=6NERQ7Dymau_gJ4k&q=85&s=3a6ac22e96d76e4b85a1171ea207608b" alt="飞书应用凭证" loading="lazy" />
+              <div class="caption">请妥善保管 App Secret，避免泄露。</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <h3>3）批量导入应用权限</h3>
+            <p>在“权限管理”页点击“批量导入”，粘贴下方权限 JSON（官方推荐），然后提交。</p>
+            <div class="code">{
+  "scopes": {
+    "tenant": [
+      "aily:file:read",
+      "aily:file:write",
+      "application:application.app_message_stats.overview:readonly",
+      "application:application:self_manage",
+      "application:bot.menu:write",
+      "cardkit:card:write",
+      "contact:user.employee_id:readonly",
+      "corehr:file:download",
+      "docs:document.content:read",
+      "event:ip_list",
+      "im:chat",
+      "im:chat.access_event.bot_p2p_chat:read",
+      "im:chat.members:bot_access",
+      "im:message",
+      "im:message.group_at_msg:readonly",
+      "im:message.group_msg",
+      "im:message.p2p_msg:readonly",
+      "im:message:readonly",
+      "im:message:send_as_bot",
+      "im:resource",
+      "sheets:spreadsheet",
+      "wiki:wiki:readonly"
+    ],
+    "user": ["contact:contact.base:readonly","aily:file:read", "aily:file:write", "im:chat.access_event.bot_p2p_chat:read"]
+  }
+}</div>
+            <div class="figure">
+              <img src="https://mintcdn.com/clawdhub/6NERQ7Dymau_gJ4k/images/feishu-step4-permissions.png?fit=max&auto=format&n=6NERQ7Dymau_gJ4k&q=85&s=a386d201628f65771d9d423056d9dc59" alt="飞书权限导入" loading="lazy" />
+              <div class="caption">导入后请检查关键权限是否都在“已申请”状态。</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <h3>4）启用机器人能力</h3>
+            <p>打开“应用能力 &gt; 机器人”，启用机器人并设置机器人名称。</p>
+            <div class="figure">
+              <img src="https://mintcdn.com/clawdhub/6NERQ7Dymau_gJ4k/images/feishu-step5-bot-capability.png?fit=max&auto=format&n=6NERQ7Dymau_gJ4k&q=85&s=4c330500fd7db2e72569dc2a379697ee" alt="飞书机器人能力" loading="lazy" />
+              <div class="caption">机器人名称建议与 OpenClaw 应用场景保持一致。</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <h3>5）在 1Panel 中配置飞书</h3>
+            <p>打开“智能体 &gt; 配置”，在聊天渠道中启用飞书，并填写 App ID 和 App Secret。</p>
+            <div class="figure">
+              <img src="../images/feishu-config.png" alt="飞书配置" />
+            </div>
+          </div>
+
+          <div class="step">
+            <h3>6）配置事件订阅（长连接）</h3>
+            <p>进入“事件订阅”，选择“使用长连接接收事件（WebSocket）”，并添加事件 <code>im.message.receive_v1</code>。</p>
+            <div class="figure">
+              <img src="https://mintcdn.com/clawdhub/6NERQ7Dymau_gJ4k/images/feishu-step6-event-subscription.png?fit=max&auto=format&n=6NERQ7Dymau_gJ4k&q=85&s=00aeb4809d9df159d846e0be19bc871e" alt="飞书事件订阅配置" loading="lazy" />
+              <div class="caption">若保存失败，优先检查 OpenClaw 网关是否正在运行。</div>
+            </div>
+          </div>
+
+          <div class="step">
+            <h3>7）发布应用</h3>
+            <p>在“版本管理与发布”中创建版本并提交发布，等待企业管理员审批（企业自建应用通常可快速通过）。</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>三、发布后快速验证</h2>
+        <ol>
+          <li>在飞书中找到机器人，发送一条测试消息。</li>
+          <li>如果收到配对码，在 1Panel 中填写配对码并保存。</li>
+          <li>如果没有收到配对码，直接可以对话，则无须后续步骤。</li>
+        </ol>
+        <div class="figure">
+          <img src="../images/feishu-approve.png" alt="飞书配置" />
+        </div>
+        <p>随后再发送消息即可正常对话。若异常，可查看容器日志排查问题。</p>
+      </section>
+
+      <footer>
+        <div>openclaw.club · OpenClaw 飞书平台指南</div>
+        <a href="/guides/quick-start.html">返回快速安装 →</a>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -6,10 +6,10 @@
     <link rel="icon" type="image/svg+xml" href="https://openclaw.ai/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="https://openclaw.ai/favicon-32.png" />
     <link rel="apple-touch-icon" href="https://openclaw.ai/apple-touch-icon.png" />
-    <title>OpenClaw 俱乐部 - 全网最简单安装</title>
+    <title>OpenClaw 俱乐部 - 中文社区与实战指南</title>
     <meta
       name="description"
-      content="OpenClaw 俱乐部专注分享 OpenClaw 相关信息，提供全网最简单安装指南。"
+      content="OpenClaw 俱乐部专注分享 OpenClaw 资讯与实战经验，提供简洁安装指南与应用思路。"
     />
     <style>
       :root {
@@ -168,16 +168,59 @@
         font-size: 0.95rem;
       }
 
-      .highlight {
-        display: inline-flex;
+      .article-panel {
+        display: grid;
+        gap: 14px;
+      }
+
+      .article-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .article-item {
+        display: flex;
         align-items: center;
-        gap: 8px;
-        font-size: 0.95rem;
-        color: var(--leaf);
-        background: var(--cream);
-        padding: 6px 12px;
-        border-radius: 999px;
-        width: fit-content;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: var(--mist);
+        border: 1px solid rgba(18, 20, 22, 0.08);
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      }
+
+      .article-item:hover {
+        transform: translateY(-1px);
+        border-color: rgba(255, 106, 61, 0.45);
+      }
+
+      .article-title {
+        font-size: 0.98rem;
+        color: var(--ink);
+      }
+
+      .article-tag {
+        font-size: 0.82rem;
+        color: var(--ink-soft);
+      }
+
+      .article-item.muted {
+        opacity: 0.72;
+      }
+
+      .qr-card {
+        display: grid;
+        gap: 12px;
+      }
+
+      .qr-image {
+        width: 160px;
+        max-width: 100%;
+        border-radius: 12px;
+        border: 1px solid rgba(18, 20, 22, 0.1);
+        background: white;
+        padding: 8px;
       }
 
       footer {
@@ -188,14 +231,7 @@
         flex-wrap: wrap;
         gap: 12px;
         align-items: center;
-        justify-content: space-between;
-      }
-
-      .footer-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        color: var(--ink);
+        justify-content: flex-start;
       }
 
       @keyframes fadeUp {
@@ -244,7 +280,6 @@
             <div class="tag">openclaw.club</div>
           </div>
         </div>
-        <div class="highlight">全网最简单安装指南</div>
       </header>
 
       <main>
@@ -259,7 +294,7 @@
             OpenClaw 周边信息。我们整理了最简洁的安装路径，让你一步到位，快速开启你的机器人工作流。
           </p>
           <div class="cta">
-            <a class="primary" href="/quick-start.html">立即查看安装指南</a>
+            <a class="primary" href="/guides/quick-start.html">立即查看安装指南</a>
             <a class="secondary" href="https://docs.openclaw.ai/zh-CN" target="_blank" rel="noopener noreferrer">
               中文文档
             </a>
@@ -267,30 +302,29 @@
         </section>
 
         <section class="card-grid">
-          <div class="card">
-            <h3>社区内容覆盖全面</h3>
-            <p>
-              安装与使用教程、新闻更新、官方文档和周边资源一站式整理，打开就能用。
-            </p>
+          <div class="card article-panel">
+            <h3>文章列表</h3>
+            <div class="article-list">
+              <a class="article-item" href="/guides/feishu-platform.html">
+                <span class="article-title">飞书平台配置</span>
+                <span class="article-tag">教程</span>
+              </a>
+              <div class="article-item muted">
+                <span class="article-title">更多教程即将发布</span>
+                <span class="article-tag">敬请期待</span>
+              </div>
+            </div>
           </div>
-          <div class="card">
-            <h3>上手路径更简单</h3>
-            <p>
-              从下载安装到常见问题的处理，我们把步骤拆解成清晰的流程，让你少走弯路。
-            </p>
-          </div>
-          <div class="card">
-            <h3>跟进 OpenClaw 动态</h3>
-            <p>
-              关注新功能、版本更新和生态工具，把有价值的信息集中在一个入口。
-            </p>
+          <div class="card qr-card">
+            <h3>加入企业微信社群</h3>
+            <p>扫码加入 1Panel && OpenClaw 俱乐部企业微信群，获取安装答疑、更新通知与实战交流。</p>
+            <img class="qr-image" src="images/workweixin.png" alt="OpenClaw 俱乐部企业微信二维码" />
           </div>
         </section>
       </main>
 
       <footer>
         <div>openclaw.club · OpenClaw 俱乐部</div>
-        <a class="footer-link" href="/quick-start.html">打开安装指南 →</a>
       </footer>
     </div>
   </body>
