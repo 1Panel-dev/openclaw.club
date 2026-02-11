@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="https://openclaw.ai/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="https://openclaw.ai/favicon-32.png" />
+    <link rel="apple-touch-icon" href="https://openclaw.ai/apple-touch-icon.png" />
+    <title>用 OpenClaw 后，需要重新理解“本地大模型”</title>
+    <meta
+      name="description"
+      content="围绕 OpenClaw 的真实落地场景，分析本地模型选型、推理引擎对比与私有化部署路径，给出 2026 年 2 月参考方案。"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #111317;
+        --ink-soft: #46505c;
+        --accent: #ff6a3d;
+        --cream: #fff6e6;
+        --mist: #f3f5f8;
+        --leaf: #1f7a62;
+        --border: rgba(17, 19, 23, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
+        color: var(--ink);
+        background: radial-gradient(circle at top left, #ffe7ce, #ffffff 55%),
+          linear-gradient(135deg, #fffdf7, #f2f6fb);
+        min-height: 100vh;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .page {
+        max-width: 1120px;
+        margin: 0 auto;
+        padding: 32px clamp(20px, 6vw, 72px) 64px;
+      }
+
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 32px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .brand-logo {
+        width: 48px;
+        height: 48px;
+        border-radius: 16px;
+        background: white;
+        padding: 8px;
+        box-shadow: 0 10px 20px rgba(18, 20, 22, 0.12);
+      }
+
+      .brand-name {
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+
+      .note {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--cream);
+        color: var(--leaf);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 0.95rem;
+      }
+
+      .nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .nav a {
+        padding: 10px 16px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: white;
+        font-size: 0.95rem;
+      }
+
+      .hero {
+        display: grid;
+        gap: 18px;
+        padding: 32px;
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 16px 32px rgba(18, 20, 22, 0.08);
+        margin-bottom: 28px;
+      }
+
+      .hero h1 {
+        font-size: clamp(1.8rem, 3.8vw, 2.6rem);
+        line-height: 1.25;
+      }
+
+      .hero p {
+        color: var(--ink-soft);
+        line-height: 1.75;
+        font-size: 1rem;
+      }
+
+      .section {
+        background: white;
+        border-radius: 20px;
+        padding: 28px;
+        box-shadow: 0 14px 28px rgba(18, 20, 22, 0.07);
+        margin-bottom: 22px;
+      }
+
+      .section h2 {
+        font-size: 1.35rem;
+        margin-bottom: 14px;
+      }
+
+      .section h3 {
+        font-size: 1.08rem;
+        margin: 18px 0 10px;
+      }
+
+      .section p {
+        color: var(--ink-soft);
+        line-height: 1.75;
+        font-size: 0.98rem;
+        margin-bottom: 12px;
+      }
+
+      .section ul,
+      .section ol {
+        padding-left: 18px;
+        color: var(--ink-soft);
+        line-height: 1.7;
+        font-size: 0.98rem;
+      }
+
+      .section li {
+        margin-bottom: 6px;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        margin: 10px 0 16px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        min-width: 760px;
+      }
+
+      th,
+      td {
+        border-bottom: 1px solid var(--border);
+        text-align: left;
+        padding: 10px 12px;
+        font-size: 0.94rem;
+        line-height: 1.55;
+        vertical-align: top;
+      }
+
+      th {
+        background: var(--mist);
+        color: var(--ink);
+      }
+
+      .code {
+        background: #111317;
+        color: #f5f6f7;
+        border-radius: 12px;
+        padding: 14px 16px;
+        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
+        font-size: 0.86rem;
+        line-height: 1.55;
+        overflow-x: auto;
+        margin: 10px 0 14px;
+      }
+
+      .figure {
+        margin: 12px 0 16px;
+        padding: 12px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: #fffaf2;
+      }
+
+      .figure img {
+        width: 100%;
+        height: auto;
+        border-radius: 10px;
+        border: 1px solid rgba(17, 19, 23, 0.08);
+      }
+
+      .image-placeholder {
+        width: 100%;
+        min-height: 220px;
+        border-radius: 10px;
+        border: 1px dashed rgba(17, 19, 23, 0.25);
+        background: linear-gradient(135deg, #f8f9fb, #eef2f7);
+        color: var(--ink-soft);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 16px;
+        font-size: 0.92rem;
+      }
+
+      .caption {
+        margin-top: 8px;
+        font-size: 0.88rem;
+        color: var(--ink-soft);
+      }
+
+      footer {
+        margin-top: 24px;
+        color: var(--ink-soft);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px;
+        font-size: 0.92rem;
+      }
+
+      @media (max-width: 720px) {
+        .hero,
+        .section {
+          padding: 22px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header>
+        <div class="brand">
+          <img class="brand-logo" src="https://openclaw.ai/favicon.svg" alt="OpenClaw logo" width="48" height="48" />
+          <div>
+            <div class="brand-name">OpenClaw 俱乐部</div>
+            <div class="note">本地大模型实践观察（截至 2026 年 2 月）</div>
+          </div>
+        </div>
+        <nav class="nav">
+          <a href="/">返回首页</a>
+          <a href="/guides/quick-start.html">快速安装</a>
+          <a href="/guides/feishu-platform.html">飞书配置</a>
+        </nav>
+      </header>
+
+      <section class="hero">
+        <h1>用 OpenClaw 后，需要重新理解“本地大模型”</h1>
+      </section>
+
+      <section class="section">
+        <p>引言：近期， “大龙虾” OpenClaw 引爆全球互联网，以其面向本地与私有化场景的架构设计、对工具调用与自动化执行的良好支持，在技术社区引发广泛关注，逐步成为开发者和技术团队构建“可长期运行的个人助理”的重要选择。本文将围绕 OpenClaw 的实际落地场景，系统分析其对模型底座与算力平台的核心要求，并结合本地部署实践，给出最适配的参考方案（截止到26年2月）。</p>
+      </section>
+
+      <section class="section">
+        <h2>一、OpenClaw 应用正当时</h2>
+        <p>过去几年，大模型的主要形态，其实只有一种：一个会聊天的机器人。它能回答问题、能写点代码、能总结文档，但本质上始终停留在“对话层”。</p>
+        <p>而 OpenClaw 的横空出世，让很多人第一次意识到：AI 不一定只是对话窗口，它可以直接参与到执行的流程。OpenClaw 主打 “本地部署 + 多渠道交互 + 任务执行”，让用户通过常用聊天工具指挥 AI 完成文件操作、浏览器控制、定时任务等自动化工作。所以很多人在第一次跑通 OpenClaw Demo 的时候，都会有一个相同的感受：</p>
+        <p>“AI 终于不像 PPT 里的东西，它开始有‘干活感’了。“</p>
+      </section>
+
+      <section class="section">
+        <h2>二、OpenClaw 落地过程中暴露的共性问题</h2>
+        <p>在实际引入 OpenClaw 的过程中，很多团队很快发现，OpenClaw 本身提供了清晰的能力边界和灵活的扩展方式，但一旦进入真实场景，模型的差异会被迅速放大。</p>
+
+        <h3>模型选型混乱，国内网络环境加剧落地门槛</h3>
+        <p>当前可选的大模型数量繁多，能力侧重点各不相同，有的偏代码，有的偏推理，有的在对话上表现突出，却在工具调用时不够稳定。对 OpenClaw 而言，这种差异直接影响任务的可控性和执行成功率。</p>
+        <p>同时，在国内环境下，网络条件的不确定性也成为绕不开的现实问题。依赖海外模型或跨境 API，往往会引入额外的延迟、抖动甚至不可用风险，使得自动化流程难以长期稳定运行。</p>
+
+        <h3>公有模型Tokens消耗过快，长期使用成本居高不下</h3>
+        <p>一次对话和任务执行，会多次调用大模型，大模型会持续参与任务分析、决策和校验。多轮推理、长上下文和高并发请求，会迅速放大 Token 消耗，成本曲线陡然上升，甚至超过了原本希望通过自动化节省的人力成本的原始诉求，大家普遍感觉“太贵了”。</p>
+
+        <h3>数据安全风险突出，与OpenClaw“本地优先”的定位相悖</h3>
+        <p>OpenClaw本身强调“数据默认本地存储、用户掌控数据主权”，这也是其吸引大量隐私敏感型用户的核心优势。但在实际使用过程中，选用公有模型作为支撑，会导致“数据安全闭环被打破”，产生突出的安全风险，与平台本身的定位相悖。当OpenClaw对接公有模型时，用户的对话指令、任务数据（如本地文件内容、网页监控数据、运维日志）需要上传至公有模型的云端服务器进行处理，这就意味着，用户的隐私数据、业务数据可能面临泄露、篡改、滥用的风险——尤其是办公场景中的机密文档、开发运维场景中的服务器信息、个人用户的隐私文件等，一旦上传至云端，无法完全掌控数据流向，可能违反数据安全相关规定，也可能造成个人隐私、企业机密泄露。</p>
+
+        <p>综合来看，OpenClaw 落地过程中暴露的选型混乱、成本过高、数据安全三大共性问题，本质上都指向同一个核心——模型底座的选择。OpenClaw 作为“智能体执行平台”，其自身的网关调度、任务拆解、多渠道联动能力已相对成熟，而模型底座作为“决策核心”，直接决定了落地门槛、使用成本与安全水平。本地部署大模型，正在成为 OpenClaw 场景下最现实、也最稳妥的选择。</p>
+      </section>
+
+      <section class="section">
+        <h2>三、OpenClaw 场景下的本地模型更优解</h2>
+        <p>OpenClaw 对本地支撑模型的核心诉求是：指令拆解精准、工具调用适配性强、推理高效。</p>
+        <p>笔者结合当前开源生态，重点分析 3 款最新开源的大模型，搭配最优推理框架，探索 OpenClaw 生态全栈私有化部署的更优解。</p>
+
+        <h3>3.1 OpenClaw 场景下的主流开源模型分析</h3>
+        <p>基于以下几个指标选型模型。</p>
+        <ul>
+          <li>部署成本：少花钱，消费级硬件优先。不将 8 卡 H20 这种“巨兽”纳入考虑范围</li>
+          <li>指令拆解：精准拆解自动化任务步骤</li>
+          <li>工具调用：适配OpenClaw常用工具，联动顺畅</li>
+          <li>推理速度：高效响应，适配高频任务</li>
+        </ul>
+        <p>综合考察当前几款主流的开源模型，确适配性，规避选型误区，GLM-4.7-Flash、Qwen3-Coder-Next、Step-3.5-Flash 这三个模型纳入重点考察范围。</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>模型名称</th>
+                <th>部署成本</th>
+                <th>指令拆解</th>
+                <th>工具调用</th>
+                <th>推理速度</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>GLM-4.7-Flash</td>
+                <td>低</td>
+                <td>均衡，基础任务适配，复杂任务精细化不足</td>
+                <td>一般，经常出现工具无法调用问题</td>
+                <td>较快</td>
+              </tr>
+              <tr>
+                <td>Qwen3-Coder-Next</td>
+                <td>中等</td>
+                <td>精准，可高效拆解各类自动化任务步骤</td>
+                <td>优秀，常规任务可完整执行</td>
+                <td>较慢</td>
+              </tr>
+              <tr>
+                <td>Step-3.5-Flash</td>
+                <td>中等</td>
+                <td>精准，可高效拆解各类自动化任务步骤</td>
+                <td>优秀，常规任务可完整执行</td>
+                <td>较快</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>* 模型简介：</p>
+        <p>GLM-4.7-Flash：智谱 AI 开源的 MoE 架构模型，总参数 30B、激活参数 3B，支持长上下文，编码与多跳推理达开源 SOTA，显存占用低适配消费级硬件，支持多框架本地部署。</p>
+        <p>Qwen3-Coder-Next：阿里千问开源的代码代理专用 MoE 架构模型，总参数 80B、激活参数 3B，支持长上下文，SWE-Bench Verified 准确率 74.2%，专注于长时程、多工具、可交互的真实编程任务。</p>
+        <p>Step-3.5-Flash：阶跃星辰开源的 MoE 架构模型，总参数 196B、激活参数 11B，支持长上下文，主攻智能体场景的实时推理任务，推理速度快，在代码、智能体任务表现优异，适配本地私有化部署。</p>
+        <div class="figure">
+          <div class="image-placeholder"> <img src="../images/model_insight.png" alt="主流开源模型对比" loading="lazy" /></div>
+          <div class="caption">主流开源模型对比。</div>
+        </div>
+        <p>综上，Step-3.5-Flash 是 OpenClaw 接入本地模型的优选方案。</p>
+
+        <h3>3.2 推理引擎的选型</h3>
+        <p>为充分发挥模型性能，需要搭配合适的推理引擎</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>推理引擎</th>
+                <th>优势</th>
+                <th>劣势</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Ollama</td>
+                <td>部署极简、多系统兼容，非技术用户易上手</td>
+                <td>推理慢、显存利用率低</td>
+              </tr>
+              <tr>
+                <td>vLLM</td>
+                <td>推理较Ollama快5-10倍，资源利用率高，适配模型MoE架构与OpenClaw联动</td>
+                <td>对 Step-3.5-Flash-Int4 适配性不好</td>
+              </tr>
+              <tr>
+                <td>llama.cpp</td>
+                <td>基于C/C++实现，性能非常高</td>
+                <td>部署门槛略高</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <p>选用 llama.cpp 部署 Step-3.5-Flash 大模型</p>
+
+        <h3>3.3 部署模型</h3>
+        <p>采用搭载 NVIDIA Blackwell GB10 超级 AI 芯片的超聚变 FusionXpark 作为算力底座（128G 统一内存，1 petaFLOP 峰值算力）</p>
+        <div class="figure">
+          <div class="image-placeholder"> <img src="../images/FusionXpark.png" alt="FusionXpark 算力底座示意图" loading="lazy" /></div>
+          <div class="caption">FusionXpark 配图占位。</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h3>3.3.1 下载并格式化模型</h3>
+
+        <p>a) 安装 Hugging Face CLI</p>
+        <div class="code">curl -LsSf https://hf.co/cli/install.sh | bash</div>
+        <p>说明：亦可使用hf-mirror、魔搭社区作为下载来源</p>
+
+        <p>b) 下载模型</p>
+        <div class="code">hf download stepfun-ai/Step-3.5-Flash-Int4 --local-dir /path/to/models/Step-3.5-Flash-Int4</div>
+        <p>说明：下载 stepfun-ai/Step-3.5-Flash-Int4 量化版本</p>
+
+        <p>c) 合并分片模型文件</p>
+        <div class="code">cat step3p5_flash_Q4_K_S.gguf.part-* &gt; step3.5_flash_Q4_K_S.gguf</div>
+        <p>说明：将所有分片合并为完整的.gguf模型文件，llama.cpp 支持的模型格式</p>
+        <div class="figure">
+          <div class="image-placeholder"> <img src="../images/model_format.png" alt="模型文件合并结果" loading="lazy" /></div>
+          <div class="caption">模型文件合并结果配图。</div>
+        </div>
+
+        <h3>3.3.2 构建模型运行环境</h3>
+
+        <p>方案1）自行构建</p>
+        <div class="code">bash -c 'cat &gt; /tmp/docker-compose.yml &lt;&lt; EOF
+services:
+  step-server:
+    image: nvidia/cuda:13.1.1-devel-ubuntu24.04
+    container_name: llama-Step3.5-Flash-Int4
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - \${HOME}/ai/models:/models
+      - \${HOME}/ai/launchers/Step3.5-Flash-Int4/app:/app
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    working_dir: /app
+    command: &gt;
+      bash -c "apt-get update && apt-get install -y git cmake build-essential libcurl4-openssl-dev &&
+      if [ ! -d 'Step-3.5-Flash' ]; then git clone https://github.com/stepfun-ai/Step-3.5-Flash.git; fi &&
+      cd Step-3.5-Flash/llama.cpp &&
+      cmake -S . -B build-cuda -DCMAKE_BUILD_TYPE=Release -DGGML_CUDA=ON -DGGML_CUDA_GRAPHS=ON -DLLAMA_CURL=OFF &&
+      cmake --build build-cuda --config Release -j$(nproc) &&
+      ./build-cuda/bin/llama-server -m /models/Step-3.5-Flash-Int4/step3.5_flash_Q4_K_S.gguf -c 16384 -ngl 999 --port 8000 --host 0.0.0.0"
+EOF'</div>
+        <p>说明：耗时较长，编译过程需保证网络稳定。</p>
+        <div class="figure">
+          <div class="image-placeholder"> <img src="../images/openclaw_compose_up.png" alt="自行构建" loading="lazy" /></div>
+          <div class="caption">自行构建</div>
+        </div>
+
+        <p>方案2）采用 1Panel 团队构建好的镜像运行（推荐）</p>
+
+        <p>a) 拉取镜像</p>
+        <div class="code">docker pull registry.cn-shenzhen.aliyuncs.com/xusong/step3.5flash_llamacpp:latest</div>
+        <p>说明：此镜像专为 FusionXpark 优化，可直接运行在 FusionXpark 设备中。</p>
+
+        <p>b) 配置模型运行 docker compose 文件</p>
+        <div class="code">bash -c 'cat &gt; /tmp/docker-compose.yml &lt;&lt; EOF
+services:
+  step-server:
+    # Build from the Dockerfile in the current directory
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: docker pull registry.cn-shenzhen.aliyuncs.com/xusong/step3.5flash_llamacpp:latest
+    container_name: llama-Step3.5-Flash-Int4
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      # We only need to mount the models now.
+      # The code/binary is baked into the image.
+      - /home/models:/models
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    working_dir: /app
+    # The command is now strictly for runtime arguments
+    command: &gt;
+      llama-server
+      -m /models/Step-3.5-Flash-Int4/step3.5_flash_Q4_K_S.gguf
+      -c 200000
+      -ngl 999
+      -fa 1
+      -b 2048
+      -ub 2048
+      -ctk q8_0
+      -ctv q8_0
+      --no-mmap
+      --port 8000
+      --host 0.0.0.0
+EOF'</div>
+
+        <p>c) 运行模型</p>
+        <div class="code">docker compose -f docker-compose.yml up -d</div>
+        <div class="figure">
+          <div class="image-placeholder"><img src="../images/openclaw_compose_up_2.png" alt="自行构建" loading="lazy" /></div>
+          <div class="image-placeholder"><img src="../images/openclaw_compose_up_3.png" alt="自行构建" loading="lazy" /></div>
+          <div class="caption">模型容器启动。</div>
+        </div>
+
+        <p>d) 验证模型</p>
+        <p>访问：http://{IP}:8000</p>
+        <div class="figure">
+          <div class="image-placeholder"><img src="../images/llama-cpp-dashboard.png" alt="模型服务验证" loading="lazy" /></div>
+          <div class="caption">模型服务验证。</div>
+        </div>
+
+        <p>说明：上图为模型交互页面，可看到此模型输出 26.60 tokens/s</p>
+      </section>
+
+      <section class="section">
+        <h2>四、部署OpenClaw 并接入本地大模型</h2>
+
+        <h3>4.1 部署 OpenClaw</h3>
+        <p>在 1Panel 应用商店一键部署 OpenClaw</p>
+        <div class="figure">
+          <div class="image-placeholder"> <img src="../images/1panel-appstore.png" alt="本地模型接入配置" /></div>
+          <div class="caption">OpenClaw 一键部署配图。</div>
+        </div>
+        <p>过程不再赘述，详情请参考：https://1panel.cn/docs/v2/user_manual/appstore/openclaw/</p>
+
+        <h3>4.2 OpenClaw 接入本地大模型</h3>
+        <p>添加本地大模型为模型提供商，并引入智能体首选默认模型</p>
+        <div class="figure">
+          <div class="image-placeholder"> <img src="../images/openclaw-config.png" alt="本地模型接入配置" /></div>
+          <div class="caption">本地模型接入配置配图。</div>
+        </div>
+        <div class="code">{
+  "meta": {
+    "lastTouchedVersion": "2026.2.3",
+    "lastTouchedAt": "2026-02-06T05:50:04.002Z"
+  },
+  "models": {
+    "mode": "merge",
+    "providers": {
+      "step": {
+        "baseUrl": "http://192.168.8.46:8000/v1",
+        "apiKey": "hi",
+        "api": "openai-completions",
+        "models": [
+          {
+            "id": "step3.5_flash_Q4_K_S.gguf",
+            "name": "step3.5_flash_Q4_K_S.gguf",
+            "reasoning": false,
+            "input": [
+              "text"
+            ],
+            "cost": {
+              "input": 0,
+              "output": 0,
+              "cacheRead": 0,
+              "cacheWrite": 0
+            },
+            "contextWindow": 200000,
+            "maxTokens": 200000
+          }
+        ]
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "step/step3.5_flash_Q4_K_S.gguf"
+      },
+      "maxConcurrent": 4,
+      "subagents": {
+        "maxConcurrent": 8
+      }
+    }
+  },
+  "commands": {
+    "native": "auto",
+    "nativeSkills": "auto"
+  },
+  "gateway": {
+    "port": 18789,
+    "mode": "local",
+    "bind": "lan",
+    "controlUi": {
+      "allowInsecureAuth": true
+    },
+    "auth": {
+      "mode": "token",
+      "token": "f93fabf14f2df5317851ae228a03803ab23249f884618047"
+    }
+  }
+}</div>
+
+        <h3>4.3 使用全栈私有的 OpenClaw</h3>
+        <div class="figure">
+          <div class="image-placeholder"> <img src="../images/openclaw-chat-2.png" alt="飞书配置" /></div>
+          <div class="caption">全栈私有化使用效果配图。</div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2>五、 结语</h2>
+        <p>对于追求数据主权、自动化效率与长期运维成本的团队与个人而言，OpenClaw 搭配专属优化的本地模型底座，不再是 “可选方案”，而是私有化智能体时代的必然选择。当 AI 真正做到全程本地、自主执行、持续可用，我们才算真正迈入了 “让 AI 踏实干活” 的新阶段。而这套以 OpenClaw 为核心的全栈私有化架构，正是当下最贴近现实、也最具长期价值的最优解。</p>
+        <p>我们将持续跟进 OpenClaw 版本迭代、开源模型优化动态，同步更新推理引擎适配方案与算力底座优化技巧，及时补充不同硬件环境下的部署避坑指南。同时，也会跟踪国内开源生态与国产芯片的适配进展，助力更多团队低成本落地全栈私有化智能体，让 “数据自主可控、AI 高效干活” 的核心诉求，在每一个本地部署场景中得以实现，共同探索私有化智能体的更多应用可能。</p>
+      </section>
+
+      <footer>
+        <div>openclaw.club · 本地大模型深度文章</div>
+        <a href="/">返回首页 →</a>
+      </footer>
+    </div>
+  </body>
+</html>
