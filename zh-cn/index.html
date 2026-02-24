@@ -1,15 +1,15 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/svg+xml" href="https://openclaw.ai/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="https://openclaw.ai/favicon-32.png" />
     <link rel="apple-touch-icon" href="https://openclaw.ai/apple-touch-icon.png" />
-    <title>OpenClaw Club - Deploy your OpenClaw instance on VPS in seconds</title>
+    <title>OpenClaw 俱乐部 - 中文社区与实战指南</title>
     <meta
       name="description"
-      content="OpenClaw Club collaborates with the 1Panel Team to offer the simplest solution for deploying and managing OpenClaw instances on VPS."
+      content="OpenClaw 俱乐部专注分享 OpenClaw 资讯与实战经验，提供简洁安装指南与应用思路。"
     />
     <style>
       :root {
@@ -30,7 +30,7 @@
       }
 
       body {
-        font-family: "Merriweather", "Georgia", "Times New Roman", serif;
+        font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
         color: var(--ink);
         background: radial-gradient(circle at top left, #ffe7ce, #ffffff 55%),
           linear-gradient(135deg, #fffdf7, #f2f6fb);
@@ -233,35 +233,6 @@
         gap: 12px;
       }
 
-      .community-links {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      .community-link {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 14px;
-        border-radius: 999px;
-        border: 1px solid rgba(18, 20, 22, 0.14);
-        background: #ffffff;
-        font-size: 0.94rem;
-        transition: transform 0.2s ease, border-color 0.2s ease;
-      }
-
-      .community-link:hover {
-        transform: translateY(-1px);
-        border-color: rgba(255, 106, 61, 0.55);
-      }
-
-      .community-link svg {
-        width: 18px;
-        height: 18px;
-        color: var(--ink);
-      }
-
       .qr-image {
         width: 160px;
         max-width: 100%;
@@ -324,65 +295,55 @@
             height="48"
           />
           <div>
-            <div class="brand-name">OpenClaw Club</div>
+            <div class="brand-name">OpenClaw 俱乐部</div>
             <div class="tag">openclaw.club</div>
           </div>
         </div>
-        <a class="lang-switch" href="/zh-cn/">中文</a>
+        <a class="lang-switch" href="/">English</a>
       </header>
 
       <main>
         <section class="hero">
           <h1>
-            Deploy your OpenClaw instance on VPS in seconds. 
-            <br/>
-            <h2>
-              One-click installation, effortless management.
-            </h2>
+            在 VPS 上秒级部署 OpenClaw
+            <br />
+            <h2>一键安装，轻松管理</h2>
           </h1>
           <p>
-            OpenClaw Club collaborates with the 1Panel Team to offer the simplest solution for deploying and managing OpenClaw instances on VPS.
+            OpenClaw Club 携手 1Panel 团队，为你提供在 VPS 上部署和管理 OpenClaw 实例的最简解决方案。
           </p>
           <div class="cta">
-            <a class="primary" href="/guides/quick-start.html">View Setup Guide</a>
-            <a class="secondary" href="https://docs.openclaw.ai" target="_blank" rel="noopener noreferrer">
-              Official Docs
+            <a class="primary" href="/zh-cn/guides/quick-start.html">立即查看安装指南</a>
+            <a class="secondary" href="https://docs.openclaw.ai/zh-CN" target="_blank" rel="noopener noreferrer">
+              中文文档
             </a>
           </div>
         </section>
 
         <section class="card-grid">
           <div class="card article-panel">
-            <h3>Featured Articles</h3>
+            <h3>文章列表</h3>
             <div class="article-list">
-              <a class="article-item" href="/guides/quick-start.html">
-                <span class="article-title">OpenClaw Quick Start Guide</span>
-                <span class="article-tag">Tutorial</span>
+              <a class="article-item" href="/zh-cn/guides/quick-start.html">
+                <span class="article-title">OpenClaw 快速上手指南</span>
+                <span class="article-tag">教程</span>
+              </a>
+              <a class="article-item" href="/guides/local-model-rethink.html">
+                <span class="article-title">用 OpenClaw 后，需要重新理解“本地大模型”</span>
+                <span class="article-tag">深度</span>
               </a>
             </div>
           </div>
           <div class="card qr-card">
-            <h3>Join Discord and Telegram</h3>
-            <div class="community-links">
-              <a class="community-link" href="https://discord.gg/kmQBgX383B" target="_blank" rel="noopener noreferrer" aria-label="Join Discord">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M19.54 5.34A16.6 16.6 0 0 0 15.4 4l-.2.4c1.45.37 2.12.9 2.72 1.45a14.72 14.72 0 0 0-11.83 0c.73-.68 1.57-1.18 2.73-1.45L8.6 4a16.52 16.52 0 0 0-4.15 1.35C1.83 9.28 1.13 13.1 1.5 16.87A16.86 16.86 0 0 0 6.58 19.4l1.07-1.5a10.9 10.9 0 0 1-1.7-.8l.42-.32c3.27 1.53 6.8 1.53 10.03 0l.42.32c-.54.32-1.11.59-1.7.8l1.07 1.5a16.82 16.82 0 0 0 5.08-2.53c.45-4.36-.77-8.14-1.73-11.53ZM8.68 14.54c-.97 0-1.76-.9-1.76-2s.78-2 1.76-2c.99 0 1.78.9 1.76 2 0 1.1-.78 2-1.76 2Zm6.64 0c-.97 0-1.76-.9-1.76-2s.78-2 1.76-2c.99 0 1.78.9 1.76 2 0 1.1-.77 2-1.76 2Z" />
-                </svg>
-                <span>Discord</span>
-              </a>
-              <a class="community-link" href="https://t.me/+iyw962mKdhVkMDI1" target="_blank" rel="noopener noreferrer" aria-label="Join Telegram">
-                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path d="M21.54 4.47a1.55 1.55 0 0 0-1.66-.25L3.03 11.3a1.38 1.38 0 0 0 .12 2.59l3.98 1.28 1.53 4.74a1.35 1.35 0 0 0 2.31.52l2.22-2.27 3.84 2.83a1.53 1.53 0 0 0 2.43-.89L22 6.02a1.57 1.57 0 0 0-.46-1.55ZM8.28 14.53l9.03-5.7-6.57 6.72-.27 2.96-2.19-3.98Z" />
-                </svg>
-                <span>Telegram</span>
-              </a>
-            </div>
+            <h3>加入企业微信社群</h3>
+            <p>扫码加入 1Panel &amp;&amp; OpenClaw 俱乐部企业微信群，获取安装答疑、更新通知与实战交流。</p>
+            <img class="qr-image" src="https://resource.fit2cloud.com/1panel/openclaw/img/wechat.png" alt="OpenClaw 俱乐部企业微信二维码" />
           </div>
         </section>
       </main>
 
       <footer>
-        <div>openclaw.club · OpenClaw Club</div>
+        <div>openclaw.club · OpenClaw 俱乐部</div>
       </footer>
     </div>
   </body>

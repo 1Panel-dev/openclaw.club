@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/svg+xml" href="https://openclaw.ai/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://openclaw.ai/favicon-32.png" />
+  <link rel="apple-touch-icon" href="https://openclaw.ai/apple-touch-icon.png" />
+  <title>OpenClaw 快速安装指南</title>
+  <meta name="description" content="通过 1Panel 安装 OpenClaw，准备模型 API Key，并完成飞书渠道接入。" />
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #111317;
+      --ink-soft: #46505c;
+      --accent: #ff6a3d;
+      --border: rgba(17, 19, 23, 0.12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
+      color: var(--ink);
+      background: radial-gradient(circle at top left, #ffe7ce, #ffffff 55%), linear-gradient(135deg, #fffdf7, #f2f6fb);
+      min-height: 100vh;
+    }
+    a { color: inherit; }
+    .page { max-width: 1100px; margin: 0 auto; padding: 32px clamp(20px, 6vw, 72px) 64px; }
+    header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 32px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-logo { width: 48px; height: 48px; border-radius: 16px; background: #fff; padding: 8px; box-shadow: 0 10px 20px rgba(18,20,22,0.12); }
+    .brand-name { font-size: 1.1rem; font-weight: 600; }
+    .nav { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .nav a { padding: 10px 16px; border-radius: 999px; border: 1px solid var(--border); background: #fff; font-size: 0.95rem; text-decoration: none; }
+    .nav .primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .content { background: #fff; border-radius: 24px; padding: 28px; box-shadow: 0 16px 32px rgba(18, 20, 22, 0.08); }
+    .block { border: 1px solid var(--border); border-radius: 16px; background: #fbfcff; padding: 18px; margin-bottom: 16px; }
+    .content h1 { font-size: 1.35rem; margin: 14px 0 10px; color: var(--ink); }
+    .content h2 { font-size: 1.08rem; margin: 12px 0 8px; color: var(--ink); }
+    .content p, .content li { color: var(--ink-soft); font-size: 0.98rem; line-height: 1.75; }
+    .content ul { margin: 6px 0 12px 20px; }
+    .content img { width: 100%; height: auto; border-radius: 12px; border: 1px solid rgba(17,19,23,.08); box-shadow: 0 8px 16px rgba(17,19,23,.08); margin: 10px 0 16px; }
+    .code { background: #111317; color: #f5f6f7; border-radius: 12px; padding: 12px 14px; font-family: "JetBrains Mono", "SFMono-Regular", monospace; font-size: 0.88rem; line-height: 1.55; overflow-x: auto; margin: 8px 0 14px; white-space: pre-wrap; }
+    footer { margin-top: 24px; color: var(--ink-soft); font-size: 0.92rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="brand">
+      <img alt="OpenClaw logo" class="brand-logo" height="48" src="https://openclaw.ai/favicon.svg" width="48" />
+      <div class="brand-name">OpenClaw 俱乐部</div>
+    </div>
+    <nav class="nav">
+      <a href="/zh-cn/">首页</a>
+      <a href="https://docs.openclaw.ai/zh-CN" rel="noopener noreferrer" target="_blank">中文文档</a>
+      <a href="/guides/quick-start.html">English</a>
+      <a class="primary" href="/zh-cn/guides/quick-start.html">快速安装</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <section class="block">
+      <h1>OpenClaw 快速安装指南</h1>
+      <p>本文档介绍在 Linux 环境中通过 1Panel 部署 OpenClaw 的标准路径：安装 1Panel、准备模型 API Key、创建智能体并完成飞书渠道对接。</p>
+    </section>
+
+    <section class="block">
+      <h1>一、环境准备</h1>
+      <ul>
+        <li>Linux 服务器（Debian / RedHat 系均可）</li>
+        <li>x86_64 或 aarch64 架构</li>
+        <li>建议可用内存 2GB 以上</li>
+        <li>可访问互联网</li>
+        <li>模型 API Key（如 DeepSeek / Kimi / OpenAI）</li>
+      </ul>
+      <p>1Panel 在线安装文档：<a href="https://1panel.cn/docs/v2/installation/online_installation/">https://1panel.cn/docs/v2/installation/online_installation/</a></p>
+    </section>
+
+    <section class="block">
+      <h1>二、安装 1Panel</h1>
+      <h2>步骤 1：获取 root 权限</h2>
+      <pre class="code">sudo su -</pre>
+      <h2>步骤 2：执行在线安装脚本</h2>
+      <pre class="code">bash -c "$(curl -sSL https://resource.fit2cloud.com/1panel/package/v2/quick_start.sh)"</pre>
+      <h2>步骤 3：按提示完成初始化</h2>
+      <p><img src="../../images/quick-start-docx/image1.png" alt="1Panel 安装参数设置" /></p>
+      <p><img src="../../images/quick-start-docx/image2.png" alt="1Panel 登录信息" /></p>
+      <p><img src="../../images/quick-start-docx/image3.png" alt="1Panel 登录页" /></p>
+    </section>
+
+    <section class="block">
+      <h1>三、准备模型 API Key</h1>
+      <p>以 DeepSeek 为例，访问 <a href="https://platform.deepseek.com/">https://platform.deepseek.com/</a> 注册并创建 API Key。</p>
+      <p><img src="../../images/quick-start-docx/image6.png" alt="DeepSeek 平台" /></p>
+      <p><img src="../../images/quick-start-docx/image7.png" alt="DeepSeek API Key" /></p>
+    </section>
+
+    <section class="block">
+      <h1>四、部署 OpenClaw</h1>
+      <p>在 1Panel 的 AI &gt; 智能体中，先添加模型账号，再创建 OpenClaw 智能体。</p>
+      <p><img src="../../images/quick-start-docx/image8.png" alt="添加模型账号" /></p>
+      <p><img src="../../images/quick-start-docx/image9.png" alt="创建智能体" /></p>
+      <p><img src="../../images/quick-start-docx/image12.png" alt="安装完成" /></p>
+      <p><img src="../../images/quick-start-docx/image14.png" alt="聊天验证" /></p>
+    </section>
+
+    <section class="block">
+      <h1>五、飞书渠道配置</h1>
+      <p>进入飞书开放平台创建应用与机器人，配置权限、事件与回调，然后在 1Panel 中填入凭证并保存。</p>
+      <p><img src="../../images/quick-start-docx/image15.png" alt="飞书开放平台" /></p>
+      <p><img src="../../images/quick-start-docx/image23.png" alt="1Panel 飞书配置" /></p>
+      <p><img src="../../images/quick-start-docx/image29.png" alt="飞书验证" /></p>
+    </section>
+  </main>
+
+  <footer>
+    <div>openclaw.club · OpenClaw 快速安装</div>
+    <a href="/zh-cn/">返回首页 →</a>
+  </footer>
+</div>
+</body>
+</html>

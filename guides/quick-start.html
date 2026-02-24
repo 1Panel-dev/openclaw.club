@@ -1,472 +1,184 @@
 <!doctype html>
-<html lang="zh-CN">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="https://openclaw.ai/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="32x32" href="https://openclaw.ai/favicon-32.png" />
-    <link rel="apple-touch-icon" href="https://openclaw.ai/apple-touch-icon.png" />
-    <title>OpenClaw安装教程-1Panel+Ollama+gpt-oss:20b</title>
-    <meta
-      name="description"
-      content="基于1Panel+Ollama+gpt-oss:20b的OpenClaw本地化安装教程，完整步骤与配置说明。"
-    />
-    <style>
-      :root {
-        color-scheme: light;
-        --ink: #111317;
-        --ink-soft: #46505c;
-        --accent: #ff6a3d;
-        --accent-dark: #d64b24;
-        --cream: #fff6e6;
-        --mist: #f3f5f8;
-        --leaf: #1f7a62;
-        --border: rgba(17, 19, 23, 0.12);
-      }
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/svg+xml" href="https://openclaw.ai/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://openclaw.ai/favicon-32.png" />
+  <link rel="apple-touch-icon" href="https://openclaw.ai/apple-touch-icon.png" />
+  <title>OpenClaw Quick Start Guide</title>
+  <meta name="description" content="Install OpenClaw with 1Panel, prepare your model API key, and connect Feishu in a practical step-by-step guide." />
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #111317;
+      --ink-soft: #46505c;
+      --accent: #ff6a3d;
+      --border: rgba(17, 19, 23, 0.12);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Merriweather", "Georgia", "Times New Roman", serif;
+      color: var(--ink);
+      background: radial-gradient(circle at top left, #ffe7ce, #ffffff 55%), linear-gradient(135deg, #fffdf7, #f2f6fb);
+      min-height: 100vh;
+    }
+    a { color: inherit; }
+    .page { max-width: 1100px; margin: 0 auto; padding: 32px clamp(20px, 6vw, 72px) 64px; }
+    header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 32px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-logo { width: 48px; height: 48px; border-radius: 16px; background: #fff; padding: 8px; box-shadow: 0 10px 20px rgba(18,20,22,0.12); }
+    .brand-name { font-size: 1.1rem; font-weight: 600; }
+    .nav { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .nav a { padding: 10px 16px; border-radius: 999px; border: 1px solid var(--border); background: #fff; font-size: 0.95rem; text-decoration: none; }
+    .nav .primary { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+    .doc-intro,
+    .doc-section {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: #fbfcff;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
 
-      body {
-        font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
-        color: var(--ink);
-        background: radial-gradient(circle at top left, #ffe7ce, #ffffff 55%),
-          linear-gradient(135deg, #fffdf7, #f2f6fb);
-        min-height: 100vh;
-      }
+    .doc-intro p:first-child {
+      font-size: 1.1rem;
+      color: var(--ink);
+      font-weight: 600;
+    }
 
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      .page {
-        max-width: 1100px;
-        margin: 0 auto;
-        padding: 32px clamp(20px, 6vw, 72px) 64px;
-      }
-
-      header {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 32px;
-      }
-
-      .brand {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-
-      .brand-logo {
-        width: 48px;
-        height: 48px;
-        border-radius: 16px;
-        background: white;
-        padding: 8px;
-        box-shadow: 0 10px 20px rgba(18, 20, 22, 0.12);
-      }
-
-      .brand-name {
-        font-size: 1.1rem;
-        font-weight: 600;
-      }
-
-      .nav {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        align-items: center;
-      }
-
-      .nav a {
-        padding: 10px 16px;
-        border-radius: 999px;
-        border: 1px solid var(--border);
-        background: white;
-        font-size: 0.95rem;
-      }
-
-      .nav .primary {
-        background: var(--accent);
-        color: white;
-        border-color: var(--accent);
-        box-shadow: 0 10px 20px rgba(255, 106, 61, 0.3);
-      }
-
-      .hero {
-        display: grid;
-        gap: 18px;
-        padding: 32px;
-        background: white;
-        border-radius: 24px;
-        box-shadow: 0 16px 32px rgba(18, 20, 22, 0.08);
-        margin-bottom: 28px;
-      }
-
-      .hero h1 {
-        font-size: clamp(2rem, 4vw, 2.8rem);
-        line-height: 1.2;
-      }
-
-      .hero p {
-        color: var(--ink-soft);
-        line-height: 1.7;
-        font-size: 1.02rem;
-      }
-
-      .note {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        background: var(--cream);
-        color: var(--leaf);
-        padding: 8px 14px;
-        border-radius: 999px;
-        font-size: 0.95rem;
-        width: fit-content;
-      }
-
-      .section {
-        background: white;
-        border-radius: 20px;
-        padding: 28px;
-        box-shadow: 0 14px 28px rgba(18, 20, 22, 0.07);
-        margin-bottom: 22px;
-      }
-
-      .section h2 {
-        font-size: 1.4rem;
-        margin-bottom: 14px;
-      }
-
-      .section h3 {
-        font-size: 1.1rem;
-        margin: 18px 0 10px;
-      }
-
-      .section p {
-        color: var(--ink-soft);
-        line-height: 1.7;
-        font-size: 0.98rem;
-        margin-bottom: 12px;
-      }
-
-      .section ul {
-        padding-left: 18px;
-        color: var(--ink-soft);
-        line-height: 1.7;
-        font-size: 0.98rem;
-      }
-
-      .section li {
-        margin-bottom: 6px;
-      }
-
-      .steps {
-        display: grid;
-        gap: 16px;
-      }
-
-      .step {
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 18px 20px;
-        background: var(--mist);
-      }
-
-      .step h4 {
-        font-size: 1.02rem;
-        margin-bottom: 10px;
-      }
-
-      .code {
-        background: #111317;
-        color: #f5f6f7;
-        border-radius: 12px;
-        padding: 14px 16px;
-        font-family: "JetBrains Mono", "SFMono-Regular", monospace;
-        font-size: 0.88rem;
-        line-height: 1.6;
-        overflow-x: auto;
-        margin: 10px 0 14px;
-      }
-
-      .figure {
-        border: 1px dashed var(--border);
-        border-radius: 16px;
-        padding: 14px;
-        background: #fffaf2;
-        margin: 12px 0 16px;
-      }
-
-      .image-grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-
-      .image-grid img {
-        width: 100%;
-        height: auto;
-        border-radius: 12px;
-        border: 1px solid rgba(17, 19, 23, 0.08);
-        box-shadow: 0 8px 16px rgba(17, 19, 23, 0.08);
-      }
-
-      .image-placeholder {
-        height: 180px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: var(--ink-soft);
-        font-size: 0.92rem;
-        background: #fff1dd;
-        border-radius: 12px;
-      }
-
-      .caption {
-        margin-top: 8px;
-        font-size: 0.88rem;
-        color: var(--ink-soft);
-      }
-
-      .qr-box {
-        display: grid;
-        justify-items: center;
-        gap: 12px;
-        text-align: center;
-      }
-
-      .qr-box img {
-        width: 200px;
-        max-width: 100%;
-        height: auto;
-        border-radius: 12px;
-        border: 1px solid rgba(17, 19, 23, 0.08);
-        box-shadow: 0 8px 16px rgba(17, 19, 23, 0.08);
-        background: white;
-        padding: 8px;
-      }
-
-      footer {
-        margin-top: 24px;
-        color: var(--ink-soft);
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 12px;
-        font-size: 0.92rem;
-      }
-
-      @media (max-width: 720px) {
-        .hero,
-        .section {
-          padding: 22px;
-        }
-
-        .nav a {
-          font-size: 0.9rem;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="page">
-      <header>
-        <div class="brand">
-          <img
-            class="brand-logo"
-            src="https://openclaw.ai/favicon.svg"
-            alt="OpenClawlogo"
-            width="48"
-            height="48"
-          />
-          <div>
-            <div class="brand-name">OpenClaw</div>
-            <div class="note">OpenClaw+1Panel+Ollama一键上手</div>
-          </div>
-        </div>
-        <nav class="nav">
-          <a href="/">返回首页</a>
-          <a href="https://docs.openclaw.ai/zh-CN" target="_blank" rel="noopener noreferrer">中文文档</a>
-          <a class="primary" href="/guides/quick-start.html">快速安装</a>
-        </nav>
-      </header>
-
-      <section class="hero">
-        <h1>OpenClaw本地化部署快速指南</h1>
-        <p>
-          本教程以1Panel开源面板为基础，搭配Ollama本地大模型，无需担心Token花销，手把手教您部署当下受到高度追捧的个人AI助理应用OpenClaw。通过三款开源软件的组合，OpenClaw可以实现7x24稳定运行，真正成为您的贴身专属智能助理。
-        </p>
-      </section>
-
-      <section class="section">
-        <h2>一、资源准备</h2>
-        <p>
-          OpenClaw本地个人AI助理基于一台腾讯GPU云服务器构建，云服务器获取过程不做赘述，详情参见腾讯云官网。服务器配置如下：
-        </p>
-        <ul>
-          <li>操作系统：UbuntuServer24.04LTS64位</li>
-          <li>计算资源：20核80G</li>
-          <li>磁盘容量：100GB</li>
-          <li>GPU：计算型GN7（GN7.5XLARGE80）</li>
-          <li>网络：绑定弹性公网IP</li>
-        </ul>
-      </section>
-
-      <section class="section">
-        <h2>二、操作过程概览</h2>
-        <p>基于1Panel开源面板搭建本地化OpenClaw主要涉及五个步骤：</p>
-        <ul>
-          <li>第一步：1Panel安装部署</li>
-          <li>第二步：GPU资源调度配置</li>
-          <li>第三步：Ollama安装部署</li>
-          <li>第四步：gpt-oss:20b模型加载</li>
-          <li>第五步：OpenClaw安装部署及配置</li>
-        </ul>
-      </section>
-
-      <section class="section">
-        <h2>三、详细操作步骤说明</h2>
-        <div class="steps">
-          <div class="step">
-            <h4>1.1Panel安装部署</h4>
-            <p>参照官方在线安装文档：https://1panel.cn/docs/v2/installation/online_installation/ 。</p>
-            <p>步骤一：获取root权限。</p>
-            <div class="code">sudo su -</div>
-            <p>步骤二：在线安装命令。</p>
-            <div class="code">bash -c "$(curl -sSL https://resource.fit2cloud.com/1panel/package/v2/quick_start.sh)"</div>
-            <p>步骤三：安装Docker并指定目录。</p>
-            <p>步骤四：配置镜像加速器并设置面板访问参数。</p>
-            <p>步骤五：获取1Panel面板登录信息。</p>
-            <p>步骤六：验证部署成功，浏览器访问面板并登录。</p>
-            <p>步骤七：进入“面板设置”，将默认访问地址设置为1Panel公网IP。</p>
-            <div class="figure">
-              <div class="image-grid">
-                <img src="../images/1panel-install.png" alt="1Panel安装" />
-                <img src="../images/1panel-login.png" alt="1Panel登录" />
-                <img src="../images/1panel-setup.png" alt="1Panel设置" />
-              </div>
-              <div class="caption">1Panel安装与登录界面。</div>
-            </div>
-          </div>
-
-          <div class="step">
-            <h4>2.GPU资源调度配置</h4>
-            <p>进入1Panel“终端”，完成NVIDIA容器镜像配置，确保容器可调用GPU。</p>
-            <p>步骤一：确认驱动已安装。</p>
-            <div class="code">nvidia-smi</div>
-            <p>如未安装驱动，请参考：https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#installing-with-apt 。</p>
-            <p>步骤二：安装NVIDIA容器工具。</p>
-            <div class="code">curl -fsSL https://nvidia.github.io/libnvidia-container/gpgkey | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-container-toolkit-keyring.gpg \
-  && curl -s -L https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list | \
-    sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g' | \
-    sudo tee /etc/apt/sources.list.d/nvidia-container-toolkit.list</div>
-            <div class="code">sed -i -e '/experimental/ s/^#//g' /etc/apt/sources.list.d/nvidia-container-toolkit.list</div>
-            <div class="code">sudo apt-get update</div>
-            <div class="code">sudo apt-get install -y nvidia-container-toolkit</div>
-            <p>步骤三：配置Docker并重启。</p>
-            <div class="code">sudo nvidia-ctk runtime configure --runtime=docker</div>
-            <div class="code">sudo systemctl restart docker</div>
-          </div>
-
-          <div class="step">
-            <h4>3.Ollama安装部署</h4>
-            <p>进入1Panel应用商店，在AI分类找到“Ollama”并点击安装。</p>
-            <p>安装参数：确认版本号与端口，勾选“端口外部访问”和“开启GPU支持”，其他保持默认。</p>
-            <p>安装完成后，在“已安装”页面点击“跳转”，出现“Ollamaisrunning”即部署成功。</p>
-            <div class="figure">
-              <div class="image-grid">
-                <img src="../images/app-install-ollama.png" alt="Ollama安装参数" />
-                <img src="../images/ollama-running.png" alt="Ollama运行状态" />
-              </div>
-              <div class="caption">Ollama安装参数与运行状态。</div>
-            </div>
-          </div>
-
-          <div class="step">
-            <h4>4.gpt-oss:20b本地模型加载</h4>
-            <p>进入1Panel的“AI→模型”，点击“添加模型”。</p>
-            <p>访问Ollama官网搜索gpt-oss，复制模型ID“gpt-oss:20b”填入名称并添加，加载约20至30分钟。</p>
-            <p>模型状态变为“成功”后点击运行测试，确认对话正常。</p>
-          </div>
-
-          <div class="step">
-            <h4>5.OpenClaw安装部署及配置</h4>
-            <p>进入1Panel应用商店安装OpenClaw，设置参数如下：</p>
-            <ul>
-              <li>版本：默认最新版本</li>
-              <li>端口：默认18789、18790，如有占用可调整</li>
-              <li>模型供应商：选择Ollama</li>
-              <li>模型：填写Ollama/gpt-oss:20b</li>
-              <li>模型APIKey：本地模型输入任意字符</li>
-              <li>BaseURL：填写http://IP:11434/v1</li>
-              <li>端口外部访问：勾选</li>
-            </ul>
-            <div class="figure">
-              <div class="image-grid">
-                <img src="../images/openclaw-install.png" alt="OpenClaw安装参数" />
-              </div>
-            </div>
-            <p>安装完成后，进入“已安装”页面点击“进入目录”，打开data/conf/openclaw.json，复制gateway.token值。</p>
-            <p>在OpenClaw应用参数中设置Web访问地址，例如：</p>
-            <div class="code">139.186.147.190:18789?token=9bfd07dd800a8c304b62bfac09f698cb7ad9f939d812021a</div>
-            <div class="figure">
-              <div class="image-grid">
-                <img src="../images/openclaw-params.png" alt="OpenClaw参数配置" />
-                <img src="../images/openclaw-setup-url.png" alt="OpenClaw应用安装" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <h2>四、OpenClaw使用效果</h2>
-        <p>
-          完成以上操作后，进入应用商店已安装列表点击跳转，使用带token的链接即可进入OpenClaw体验。可输入简单任务交给AI助理完成。
-        </p>
-        <p>
-          如需联网搜索能力，可到https://brave.com/申请BraveSearchAPIKey，并在OpenClaw的Config/Web/Search页面填入。
-        </p>
-        <div class="figure">
-          <div class="image-grid">
-            <img src="../images/openclaw-chat.png" alt="OpenClaw对话" />
-            <img src="../images/openclaw-barve-search.png" alt="BraveSearch配置" />
-          </div>
-          <div class="caption">OpenClaw对话与联网搜索配置。</div>
-        </div>
-      </section>
-
-      <section class="section">
-        <h2>五、总结</h2>
-        <p>
-          通过上述步骤，我们可依托1Panel运维面板快速搭建7x24稳定运行的本地AI助理。整个流程无需复杂命令行，配置可视化，小白也能快速完成。当前推荐gpt-oss:20b模型，未来随着OpenClaw与Ollama持续迭代，本地模型能力会持续增强。
-        </p>
-        <p>
-          这套本地化AI助理方案无需外部Token，隐私更有保障，欢迎动手实操体验开源三件套带来的高效智能服务。
-        </p>
-      </section>
-
-      <section class="section">
-        <h2>六、加入企业微信社群</h2>
-        <p>扫码加入 OpenClaw 俱乐部企业微信群，获取安装答疑、版本更新和使用交流。</p>
-        <div class="qr-box">
-          <img src="https://resource.fit2cloud.com/1panel/openclaw/img/wechat.png" alt="OpenClaw 俱乐部企业微信二维码" />
-        </div>
-      </section>
-
-      <footer>
-        <div>openclaw.club·OpenClaw</div>
-        <a href="/">返回首页→</a>
-      </footer>
+    .content { background: #fff; border-radius: 24px; padding: 28px; box-shadow: 0 16px 32px rgba(18, 20, 22, 0.08); }
+    .content p, .content li { color: var(--ink-soft); font-size: 0.98rem; line-height: 1.75; }
+    .content p { margin-bottom: 12px; }
+    .content ul { margin: 6px 0 12px 20px; }
+    .content h1 { font-size: 1.45rem; margin: 22px 0 12px; color: var(--ink); }
+    .content h2 { font-size: 1.12rem; margin: 18px 0 10px; color: var(--ink); }
+    .content img { width: 100%; height: auto; border-radius: 12px; border: 1px solid rgba(17,19,23,.08); box-shadow: 0 8px 16px rgba(17,19,23,.08); margin: 10px 0 16px; }
+    .code { background: #111317; color: #f5f6f7; border-radius: 12px; padding: 12px 14px; font-family: "JetBrains Mono", "SFMono-Regular", monospace; font-size: 0.88rem; line-height: 1.55; overflow-x: auto; margin: 8px 0 14px; white-space: pre-wrap; }
+    footer { margin-top: 24px; color: var(--ink-soft); font-size: 0.92rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    @media (max-width: 720px) { .content { padding: 20px; } }
+  </style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="brand">
+      <img alt="OpenClaw logo" class="brand-logo" height="48" src="https://openclaw.ai/favicon.svg" width="48" />
+      <div class="brand-name">OpenClaw Club</div>
     </div>
-  </body>
+    <nav class="nav">
+      <a href="/">Home</a>
+      <a href="https://docs.openclaw.ai" rel="noopener noreferrer" target="_blank">Official Docs</a>
+      <a href="/zh-cn/guides/quick-start.html">中文</a>
+      <a class="primary" href="/guides/quick-start.html">Quick Start</a>
+    </nav>
+  </header>
+
+  <main class="content">
+    <section class="doc-intro">
+      <p>OpenClaw Quick Start</p>
+      <p>This guide walks through the complete path: install 1Panel on Linux, prepare your model API key, deploy OpenClaw, and connect Feishu. If you prefer Chinese, switch to the Chinese version from the top navigation.</p>
+    </section>
+
+    <section class="doc-section">
+      <h1>Environment Checklist</h1>
+      <ul>
+        <li>Linux server or client (Debian/RedHat family recommended)</li>
+        <li>x86_64 or aarch64 architecture</li>
+        <li>At least 2 GB available memory</li>
+        <li>Modern browser (Chrome, Firefox, Edge)</li>
+        <li>Internet access</li>
+        <li>One model API key (for example DeepSeek, Kimi, OpenAI, or your local model endpoint)</li>
+      </ul>
+      <p>1Panel installation docs: <a href="https://1panel.cn/docs/v2/installation/online_installation/">https://1panel.cn/docs/v2/installation/online_installation/</a></p>
+    </section>
+
+    <section class="doc-section">
+      <h1>Install 1Panel</h1>
+      <h2>Step 1: Switch to root</h2>
+      <pre class="code">sudo su -</pre>
+
+      <h2>Step 2: Run the online installer</h2>
+      <pre class="code">bash -c "$(curl -sSL https://resource.fit2cloud.com/1panel/package/v2/quick_start.sh)"</pre>
+
+      <h2>Step 3: Follow interactive prompts</h2>
+      <ul>
+        <li>Choose install directory (default is usually fine)</li>
+        <li>Install Docker if prompted</li>
+        <li>Configure panel port, security entry, and credentials</li>
+      </ul>
+      <p><img src="../images/quick-start-docx/image1.png" alt="1Panel setup prompts" /></p>
+      <p><img src="../images/quick-start-docx/image2.png" alt="1Panel login information" /></p>
+      <p><img src="../images/quick-start-docx/image3.png" alt="1Panel login page" /></p>
+      <p><img src="../images/quick-start-docx/image4.png" alt="1Panel public URL settings" /></p>
+    </section>
+
+    <section class="doc-section">
+      <h1>Prepare Model API Key</h1>
+      <p>This example uses DeepSeek. You can use any model provider supported by OpenClaw.</p>
+      <h2>Step 1: Register on DeepSeek platform</h2>
+      <p><a href="https://platform.deepseek.com/">https://platform.deepseek.com/</a></p>
+      <p><img src="../images/quick-start-docx/image6.png" alt="DeepSeek developer platform" /></p>
+
+      <h2>Step 2: Create API key</h2>
+      <p><img src="../images/quick-start-docx/image7.png" alt="DeepSeek API key" /></p>
+    </section>
+
+    <section class="doc-section">
+      <h1>Deploy OpenClaw in 1Panel</h1>
+      <h2>Step 1: Add model account</h2>
+      <p>Go to AI &gt; Agent, then add your model provider account first.</p>
+      <p><img src="../images/quick-start-docx/image8.png" alt="Add model account" /></p>
+
+      <h2>Step 2: Create the OpenClaw agent</h2>
+      <p>Set app version, WebUI port, Bridge port, and select your model account.</p>
+      <p><img src="../images/quick-start-docx/image9.png" alt="Create OpenClaw agent" /></p>
+      <p><img src="../images/quick-start-docx/image10.png" alt="OpenClaw parameters" /></p>
+      <p><img src="../images/quick-start-docx/image11.png" alt="Model selection" /></p>
+      <p><img src="../images/quick-start-docx/image12.png" alt="OpenClaw installed" /></p>
+
+      <h2>Step 3: Validate deployment</h2>
+      <p>Open the WebUI from the agent list and verify your assistant can respond normally.</p>
+      <p><img src="../images/quick-start-docx/image13.png" alt="OpenClaw entry" /></p>
+      <p><img src="../images/quick-start-docx/image14.png" alt="OpenClaw chat" /></p>
+    </section>
+
+    <section class="doc-section">
+      <h1>Configure Feishu Channel</h1>
+      <h2>Step 1: Create an app in Feishu Open Platform</h2>
+      <p><a href="https://open.feishu.cn/app?lang=en-US">https://open.feishu.cn/app?lang=en-US</a></p>
+      <p><img src="../images/quick-start-docx/image15.png" alt="Feishu open platform" /></p>
+
+      <h2>Step 2: Create bot and set permissions</h2>
+      <p>Create your bot, then import the required permission scopes in app settings.</p>
+      <p><img src="../images/quick-start-docx/image17.png" alt="Create Feishu bot" /></p>
+      <p><img src="../images/quick-start-docx/image20.png" alt="Feishu permissions" /></p>
+
+      <h2>Step 3: Fill credentials in 1Panel</h2>
+      <p>Get app credentials from Feishu and save them in the OpenClaw channel config.</p>
+      <p><img src="../images/quick-start-docx/image22.png" alt="Feishu credentials" /></p>
+      <p><img src="../images/quick-start-docx/image23.png" alt="1Panel Feishu config" /></p>
+
+      <h2>Step 4: Add event subscription and publish</h2>
+      <p>Configure event callback and subscribe to <code>im.message.receive_v1</code>, then publish a new app version.</p>
+      <p><img src="../images/quick-start-docx/image24.png" alt="Feishu events" /></p>
+      <p><img src="../images/quick-start-docx/image26.png" alt="Feishu message event" /></p>
+      <p><img src="../images/quick-start-docx/image27.png" alt="Feishu publish version" /></p>
+      <p><img src="../images/quick-start-docx/image29.png" alt="Feishu verification" /></p>
+    </section>
+
+    <section class="doc-section">
+      <h1>Switch Models Later</h1>
+      <p>You can switch model settings anytime from AI &gt; Agent &gt; Configuration in 1Panel.</p>
+      <p><img src="../images/quick-start-docx/image30.png" alt="Model config update" /></p>
+    </section>
+  </main>
+
+  <footer>
+    <div>openclaw.club · OpenClaw Quick Start</div>
+    <a href="/">Back to Home →</a>
+  </footer>
+</div>
+</body>
 </html>
