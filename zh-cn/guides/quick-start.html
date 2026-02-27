@@ -1,122 +1,126 @@
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="zh-CN">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" type="image/svg+xml" href="https://openclaw.ai/favicon.svg" />
-  <link rel="icon" type="image/png" sizes="32x32" href="https://openclaw.ai/favicon-32.png" />
-  <link rel="apple-touch-icon" href="https://openclaw.ai/apple-touch-icon.png" />
-  <title>OpenClaw 快速安装指南</title>
-  <meta name="description" content="通过 1Panel 安装 OpenClaw，准备模型 API Key，并完成飞书渠道接入。" />
-  <style>
-    :root {
-      color-scheme: light;
-      --ink: #111317;
-      --ink-soft: #46505c;
-      --accent: #ff6a3d;
-      --border: rgba(17, 19, 23, 0.12);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
-      color: var(--ink);
-      background: radial-gradient(circle at top left, #ffe7ce, #ffffff 55%), linear-gradient(135deg, #fffdf7, #f2f6fb);
-      min-height: 100vh;
-    }
-    a { color: inherit; }
-    .page { max-width: 1100px; margin: 0 auto; padding: 32px clamp(20px, 6vw, 72px) 64px; }
-    header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 32px; }
-    .brand { display: flex; align-items: center; gap: 12px; }
-    .brand-logo { width: 48px; height: 48px; border-radius: 16px; background: #fff; padding: 8px; box-shadow: 0 10px 20px rgba(18,20,22,0.12); }
-    .brand-name { font-size: 1.1rem; font-weight: 600; }
-    .nav { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-    .nav a { padding: 10px 16px; border-radius: 999px; border: 1px solid var(--border); background: #fff; font-size: 0.95rem; text-decoration: none; }
-    .nav .primary { background: var(--accent); color: #fff; border-color: var(--accent); }
-    .content { background: #fff; border-radius: 24px; padding: 28px; box-shadow: 0 16px 32px rgba(18, 20, 22, 0.08); }
-    .block { border: 1px solid var(--border); border-radius: 16px; background: #fbfcff; padding: 18px; margin-bottom: 16px; }
-    .content h1 { font-size: 1.35rem; margin: 14px 0 10px; color: var(--ink); }
-    .content h2 { font-size: 1.08rem; margin: 12px 0 8px; color: var(--ink); }
-    .content p, .content li { color: var(--ink-soft); font-size: 0.98rem; line-height: 1.75; }
-    .content ul { margin: 6px 0 12px 20px; }
-    .content img { width: 100%; height: auto; border-radius: 12px; border: 1px solid rgba(17,19,23,.08); box-shadow: 0 8px 16px rgba(17,19,23,.08); margin: 10px 0 16px; }
-    .code { background: #111317; color: #f5f6f7; border-radius: 12px; padding: 12px 14px; font-family: "JetBrains Mono", "SFMono-Regular", monospace; font-size: 0.88rem; line-height: 1.55; overflow-x: auto; margin: 8px 0 14px; white-space: pre-wrap; }
-    footer { margin-top: 24px; color: var(--ink-soft); font-size: 0.92rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-  </style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<link href="https://openclaw.ai/favicon.svg" rel="icon" type="image/svg+xml"/>
+<link href="https://openclaw.ai/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/>
+<link href="https://openclaw.ai/apple-touch-icon.png" rel="apple-touch-icon"/>
+<title>OpenClaw 安装部署说明</title>
+<meta content="OpenClaw 安装部署说明，包含 1Panel 安装、大模型 API 准备、OpenClaw 部署与飞书渠道配置。" name="description"/>
+<style>
+      :root {
+        color-scheme: light;
+        --ink: #111317;
+        --ink-soft: #46505c;
+        --accent: #ff6a3d;
+        --border: rgba(17, 19, 23, 0.12);
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: "Noto Serif SC", "Source Han Serif SC", "STSong", serif;
+        color: var(--ink);
+        background: radial-gradient(circle at top left, #ffe7ce, #ffffff 55%), linear-gradient(135deg, #fffdf7, #f2f6fb);
+        min-height: 100vh;
+      }
+      a { color: inherit; }
+      .page { max-width: 1100px; margin: 0 auto; padding: 32px clamp(20px, 6vw, 72px) 64px; }
+      header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 32px; }
+      .brand { display: flex; align-items: center; gap: 12px; }
+      .brand-logo { width: 48px; height: 48px; border-radius: 16px; background: #fff; padding: 8px; box-shadow: 0 10px 20px rgba(18,20,22,0.12); }
+      .brand-name { font-size: 1.1rem; font-weight: 600; }
+      .nav { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+      .nav a { padding: 10px 16px; border-radius: 999px; border: 1px solid var(--border); background: #fff; font-size: 0.95rem; text-decoration: none; }
+      .nav .primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+      .doc-intro,
+      .doc-section {
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: #fbfcff;
+        padding: 18px;
+        margin-bottom: 16px;
+      }
+
+      .doc-intro p:first-child {
+        font-size: 1.1rem;
+        color: var(--ink);
+        font-weight: 600;
+      }
+
+.content { background: #fff; border-radius: 24px; padding: 28px; box-shadow: 0 16px 32px rgba(18, 20, 22, 0.08); }
+      .content p, .content li { color: var(--ink-soft); font-size: 0.98rem; line-height: 1.75; }
+      .content p { margin-bottom: 12px; }
+      .content ul { margin: 6px 0 12px 20px; }
+      .content h1 { font-size: 1.45rem; margin: 22px 0 12px; color: var(--ink); }
+      .content h2 { font-size: 1.12rem; margin: 18px 0 10px; color: var(--ink); }
+      .content img { width: 100%; height: auto; border-radius: 12px; border: 1px solid rgba(17,19,23,.08); box-shadow: 0 8px 16px rgba(17,19,23,.08); margin: 10px 0 16px; }
+      .code { background: #111317; color: #f5f6f7; border-radius: 12px; padding: 12px 14px; font-family: "JetBrains Mono", "SFMono-Regular", monospace; font-size: 0.88rem; line-height: 1.55; overflow-x: auto; margin: 8px 0 14px; white-space: pre-wrap; }
+      footer { margin-top: 24px; color: var(--ink-soft); font-size: 0.92rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+      @media (max-width: 720px) { .content { padding: 20px; } }
+    </style>
 </head>
 <body>
 <div class="page">
-  <header>
-    <div class="brand">
-      <img alt="OpenClaw logo" class="brand-logo" height="48" src="https://openclaw.ai/favicon.svg" width="48" />
-      <div class="brand-name">OpenClaw 俱乐部</div>
-    </div>
-    <nav class="nav">
-      <a href="/zh-cn/">首页</a>
-      <a href="https://docs.openclaw.ai/zh-CN" rel="noopener noreferrer" target="_blank">中文文档</a>
-      <a href="/guides/quick-start.html">English</a>
-      <a class="primary" href="/zh-cn/guides/quick-start.html">快速安装</a>
-    </nav>
-  </header>
-
-  <main class="content">
-    <section class="block">
-      <h1>OpenClaw 快速安装指南</h1>
-      <p>本文档介绍在 Linux 环境中通过 1Panel 部署 OpenClaw 的标准路径：安装 1Panel、准备模型 API Key、创建智能体并完成飞书渠道对接。</p>
-    </section>
-
-    <section class="block">
-      <h1>一、环境准备</h1>
-      <ul>
-        <li>Linux 服务器（Debian / RedHat 系均可）</li>
-        <li>x86_64 或 aarch64 架构</li>
-        <li>建议可用内存 2GB 以上</li>
-        <li>可访问互联网</li>
-        <li>模型 API Key（如 DeepSeek / Kimi / OpenAI）</li>
-      </ul>
-      <p>1Panel 在线安装文档：<a href="https://1panel.cn/docs/v2/installation/online_installation/">https://1panel.cn/docs/v2/installation/online_installation/</a></p>
-    </section>
-
-    <section class="block">
-      <h1>二、安装 1Panel</h1>
-      <h2>步骤 1：获取 root 权限</h2>
-      <pre class="code">sudo su -</pre>
-      <h2>步骤 2：执行在线安装脚本</h2>
-      <pre class="code">bash -c "$(curl -sSL https://resource.fit2cloud.com/1panel/package/v2/quick_start.sh)"</pre>
-      <h2>步骤 3：按提示完成初始化</h2>
-      <p><img src="../../images/quick-start-docx/image1.png" alt="1Panel 安装参数设置" /></p>
-      <p><img src="../../images/quick-start-docx/image2.png" alt="1Panel 登录信息" /></p>
-      <p><img src="../../images/quick-start-docx/image3.png" alt="1Panel 登录页" /></p>
-    </section>
-
-    <section class="block">
-      <h1>三、准备模型 API Key</h1>
-      <p>以 DeepSeek 为例，访问 <a href="https://platform.deepseek.com/">https://platform.deepseek.com/</a> 注册并创建 API Key。</p>
-      <p><img src="../../images/quick-start-docx/image6.png" alt="DeepSeek 平台" /></p>
-      <p><img src="../../images/quick-start-docx/image7.png" alt="DeepSeek API Key" /></p>
-    </section>
-
-    <section class="block">
-      <h1>四、部署 OpenClaw</h1>
-      <p>在 1Panel 的 AI &gt; 智能体中，先添加模型账号，再创建 OpenClaw 智能体。</p>
-      <p><img src="../../images/quick-start-docx/image8.png" alt="添加模型账号" /></p>
-      <p><img src="../../images/quick-start-docx/image9.png" alt="创建智能体" /></p>
-      <p><img src="../../images/quick-start-docx/image12.png" alt="安装完成" /></p>
-      <p><img src="../../images/quick-start-docx/image14.png" alt="聊天验证" /></p>
-    </section>
-
-    <section class="block">
-      <h1>五、飞书渠道配置</h1>
-      <p>进入飞书开放平台创建应用与机器人，配置权限、事件与回调，然后在 1Panel 中填入凭证并保存。</p>
-      <p><img src="../../images/quick-start-docx/image15.png" alt="飞书开放平台" /></p>
-      <p><img src="../../images/quick-start-docx/image23.png" alt="1Panel 飞书配置" /></p>
-      <p><img src="../../images/quick-start-docx/image29.png" alt="飞书验证" /></p>
-    </section>
-  </main>
-
-  <footer>
-    <div>openclaw.club · OpenClaw 快速安装</div>
-    <a href="/zh-cn/">返回首页 →</a>
-  </footer>
+<header>
+<div class="brand">
+<img alt="OpenClaw logo" class="brand-logo" height="48" src="https://openclaw.ai/favicon.svg" width="48"/>
+<div class="brand-name">OpenClaw 俱乐部</div>
+</div>
+<nav class="nav">
+<a href="/">返回首页</a>
+<a href="https://docs.openclaw.ai/zh-CN" rel="noopener noreferrer" target="_blank">中文文档</a>
+<a class="primary" href="/guides/quick-start.html">快速安装</a>
+</nav>
+</header>
+<main class="content">
+<section class="doc-intro"><p>OpenClaw安装部署说明</p><p>本文档主要介绍 OpenClaw 在 Linux 客户端或者服务器上的安装部署过程。我们推荐使用开源的 Linux 运维管理面板1Panel 进行安装部署，整个过程简单快捷。OpenClaw安装完成后，也可通过 1Panel 运维管理面板快速完成飞书渠道对接配置，方便大家快速实现基于飞书的个人 AI 助理。</p></section>
+<section class="doc-section"><h1>资源环境准备</h1><p>本次OpenClaw安装部署需要准备以下资源环境：</p><ul><li>客户端或服务器准备：</li><li>操作系统：支持主流 Linux 发行版本（基于 Debian / RedHat，包括国产操作系统）</li><li>服务器架构：x86_64、aarch64</li><li>内存要求：建议可用内存在 2GB 以上</li><li>浏览器要求：请使用 Chrome、FireFox、IE10+、Edge 等现代浏览器</li><li>网络要求：可访问互联网</li><li>大语言模型API key</li><li>公有模型：如DeepSeek 、Kimi、OpenAI等大语言模型 API Key</li><li>本地模型</li><li>1Panel v2.1.0 安装部署：</li><li>可参考1Panel官方文档完成安装部署。具体参见如下：</li></ul><p><a href="https://1panel.cn/docs/v2/installation/online_installation/">https://1panel.cn/docs/v2/installation/online_installation/</a> </p><p>基于以上环境，我们可以分为1Panel安装部署、大语言模型API Key准备、OpenClaw安装部署以及飞书渠道配置四部分完成整个安装部署过程，具体参见如下详细说明文档。</p></section>
+<section class="doc-section"><h1>1Panel安装部署</h1><p>1Panel安装部署时首先登录到Linux客户端或服务器端，然后按照以下过程快速部署即可：</p><h2>步骤一：获取root权限</h2><p>登录服务器后首先输入如下命令切换至root权限。</p><pre class="code">sudo su -</pre><h2><strong>步骤二：执行在线安装命令</strong></h2><p>输入以下在线安装脚本命令开始执行安装。</p><pre class="code">bash -c "$(curl -sSL https://resource.fit2cloud.com/1panel/package/v2/quick_start.sh) "</pre><h2><strong>步骤三：指定1Panel安装目录</strong></h2><p>安装脚本会首先提醒设置指定安装目录，没有特殊情况直接回车选择默认即可。</p><pre class="code">设置1Panel 安装目录（默认为 /opt）：</pre><h2><strong>步骤四：完成Docker的安装</strong></h2><p>指定目录后，安装脚本会自动检测当前服务器是否安装Docker，未安装时，会询是否安装，此处输入“y”确认安装即可。</p><pre class="code">检测到未安装 Docker，是否安装[y/n]: y</pre><h2><strong>步骤五：镜像加速器配置并设置默认参数</strong></h2><p>Docker安装完成后，会如下图所示会分别提醒是否配置镜像加速并逐步提醒设置1Panel的端口、安全入口以及面板用户密码等，根据个人情况完成设置即可。其中端口需要保证已开通。</p><p><img src="../../images/quick-start-docx/image1.png"/></p><h2><strong>步骤六：获取1Panel面板的登录信息</strong></h2><p>统一设置完成后，系统会自动打印出1Panel的登录访问信息，如下图所示，大家保存方便后续使用。</p><p><img src="../../images/quick-start-docx/image2.png"/></p><h2><strong>步骤七：验证1Panel部署成功</strong></h2><p>将步骤六中获取的外部地址输入浏览器即可进入1Panel面板登录页面，输入对应的面板用户和密码，确认1Panel已经安装部署完成。</p><p><img src="../../images/quick-start-docx/image3.png"/></p><h2><strong>步骤八：1Panel访问地址设置</strong></h2><p>进入面板后，切换到“面板设置”页面，将默认访问地址设置为1Panel访问的公网IP，方便后续部署的应用可以通过点击“跳转”按钮进行访问。</p><p><img src="../../images/quick-start-docx/image4.png"/></p><h2><strong>步骤九：升级到V2.1.0最新版本（可选）</strong></h2><p>对于已有1Panel，登录面板后，点击右下角更新，将当前1Panel更新升级到v2.1.0版本。</p><p><img src="../../images/quick-start-docx/image5.png"/></p></section>
+<section class="doc-section"><h1><strong>大语言模型API申请</strong></h1><p>大家可以参加OpenClaw官网支持的模型列表，分别获取大语言模型的API Key，本次以DeepSeek为例。其它公有模型和本地模型大家自行参考相关文档准备。</p><h2><strong>步骤一：DeepSeek开发者平台注册</strong></h2><p>进入DeepSeek 开发者平台：<a href="https://platform.deepseek.com/">https://platform.deepseek.com/</a> ，首先完成个人实名认证并注册，并完成充值。如下图所示：</p><p><img src="../../images/quick-start-docx/image6.png"/></p><h2><strong>步骤二：获取DeepSeek的API key</strong></h2><p>如下图所示，进入API keys，点击创建API key，创建完成后将API Key妥善保管，方便后续使用。</p><p><img src="../../images/quick-start-docx/image7.png"/></p></section>
+<section class="doc-section"><h1><strong>OpenClaw安装部署</strong></h1><p>OpenClaw的安装基于1Panel的智能体管理进行部署，在部署过程中我们需要结合上一步骤DeepSeek大模型的API key。在1Panel中将OpenClaw的部署以及大模型API key账号的管理分为两部分进行，将二者进行了解绑，主要是为了方便大家进行OpenClaw个人助理的模型配置调整。</p><h2><strong>步骤一：添加模型账号</strong></h2><p>进入「AI」管理中的「智能体」管理菜单，点击进入后首先切换进入「模型账号」管理，点击「添加模型账号」，然后按照模型账号创建要求选择模型供应商并输入模型账号信息，完成模型账号创建。</p><p><img src="../../images/quick-start-docx/image8.png"/></p><h2><strong>步骤二：创建智能体</strong></h2><p>准备好模型账号后，切换进入「智能体」，点击创建智能体，根据要求输入相关参数即可。具体参见如下图所示：</p><p><img src="../../images/quick-start-docx/image9.png"/></p><p>其中创建智能体过程中的参数定义参见如下详细说明：</p><ul><li>名称：默认openclaw，可以自定义作为容器的名称；</li><li>应用版本：指OpenClaw的版本，如上图默认为当前最新的版本2026.2.9；</li><li>WebUI端口：OpenClaw默认的端口为18789，可自行定义端口且确保已开通；</li><li>Bridge端口：OpenClaw默认的端口为18790，可自行定义端口且确保已开通；</li><li>模型供应商：当前支持的模型如图所示，这里选择刚才添加的DeepSeek 模型供应商，如果已添加对应模型供应商的模型，则会直接提醒模型账号数量；</li></ul><p><img src="../../images/quick-start-docx/image10.png"/></p><ul><li>其他模型参数：选择模型供应商后，系统会自动获取已经维护的模型账号，如下图所示，也可勾选「手动输入模型」自行输入，如未创建模型账号，点击「创建模型账号」完成创建即可。</li></ul><p><img src="../../images/quick-start-docx/image11.png"/></p><ul><li>Token：为OpenClaw 的Web UI访问地址的token，这里系统会自动生成，方便后续直接访问。</li><li>其他参数：其他参数均保持默认配置即可。</li></ul><p>以上参数配置完成后，直接点击确认，OpenClaw开始安装。直到如下图所示，代表完成安装。</p><p><img src="../../images/quick-start-docx/image12.png"/></p><h2><strong>步骤三：验证OpenClaw部署成功</strong></h2><p>OpenClaw安装部署完成后，进入智能体列表页面，如下图所示，点击WebUI直接跳转即可进入OpenClaw页面。</p><p><img src="../../images/quick-start-docx/image13.png"/></p><p>进入OpenClaw页面后，输入信息看AI助理是否回复，如有正常回复，如下图所示，说明确认OpenClaw部署成功。</p><p><img src="../../images/quick-start-docx/image14.png"/></p></section>
+<section class="doc-section"><h1><strong>飞书渠道配置</strong></h1><p>截止目前，整个OpenClaw已经完全部署完成，我们接着在配置下飞书渠道。配置飞书渠道我们首先需要在飞书中创建一个可用的机器人，参照如下步骤逐步完成即可。</p><p>说明：本次介绍使用的是飞书个人账号，如果是企业账号则版本发布以及权限授权需要进行管理员审批，其他操作步骤一致。</p><h2><strong>步骤一：创建企业自建应用</strong></h2><p>首先我们登录飞书进入飞书开放平台（链接：<a href="https://open.feishu.cn/app?lang=zh-CN">https://open.feishu.cn/app?lang=zh-CN</a> ）进入「开发者后台」，选择「企业自建应用」，点击「创建企业自建应用」，如下图所示：</p><p><img src="../../images/quick-start-docx/image15.png"/></p><p>如下图所示，根据要求输入相关应用名称以及基本信息点击创建即可。</p><p><img src="../../images/quick-start-docx/image16.png"/></p><h2><strong>步骤二：创建机器人</strong></h2><p>如下图所示，点击创建机器人，完成机器人创建。</p><p><img src="../../images/quick-start-docx/image17.png"/></p><p>进入机器人页面后，点击机器人配置后的编辑按钮，定义机器人名称，如下图所示：</p><p><img src="../../images/quick-start-docx/image18.png"/></p><h2><strong>步骤三：权限配置</strong></h2><p>完成机器人创建后，点击进入「权限管理」，并点击「批量导入/导出权限」。</p><p><img src="../../images/quick-start-docx/image19.png"/></p><p>点击「批量导入/导出权限」，清空默认配置权限信息，将如下所示权限授权脚本复制粘贴，点击保存即可。</p><pre class="code">{
+  "scopes": {
+    "tenant": [
+      "aily:file:read",
+      "aily:file:write",
+      "application:application.app_message_stats.overview:readonly",
+      "application:application:self_manage",
+      "application:bot.menu:write",
+      "cardkit:card:write",
+      "contact:contact.base:readonly",
+      "contact:user.employee_id:readonly",
+      "corehr:file:download",
+      "docs:document.content:read",
+      "event:ip_list",
+      "im:chat",
+      "im:chat.access_event.bot_p2p_chat:read",
+      "im:chat.members:bot_access",
+      "im:message",
+      "im:message.group_at_msg:readonly",
+      "im:message.group_msg",
+      "im:message.p2p_msg:readonly",
+      "im:message:readonly",
+      "im:message:send_as_bot",
+      "im:resource",
+      "sheets:spreadsheet",
+      "wiki:wiki:readonly"
+    ],
+    "user": [
+      "aily:file:read",
+      "aily:file:write",
+      "contact:contact.base:readonly",
+      "im:chat.access_event.bot_p2p_chat:read"
+    ]
+  }
+}</pre><p>粘贴后，效果如下图所示：</p><p><img src="../../images/quick-start-docx/image20.png"/></p><p>点击「下一步，确认新增权限」，并最终确保所有权限均已开通。其中个人用户自行确认企业账户需要管理员审核。确保所有权限均已开通，如下图所示：</p><p><img src="../../images/quick-start-docx/image21.png"/></p><h2><strong>步骤四：获取凭证并1Panel配置</strong></h2><p>进入飞书平台在「凭证与基础信息」中获取应用凭证，如下图所示：</p><p><img src="../../images/quick-start-docx/image22.png"/></p><p>获取后，进入1Panel的「智能体」的「配置」页面，完成飞书聊天渠道配置，点击保存，如下图所示：</p><p><img src="../../images/quick-start-docx/image23.png"/></p><h2><strong>步骤五：创建事件与回调</strong></h2><p>如下图所示，进入「事件与回调」菜单，分别完成订阅方式设置以及事件添加。</p><p><img src="../../images/quick-start-docx/image24.png"/></p><p><strong>订阅方式设置</strong>：参照如下图选择长链接订阅方式：</p><p><img src="../../images/quick-start-docx/image25.png"/></p><p><strong>添加事件</strong>：输入im.message.receive_v1搜索，基于「应用身份订阅」勾选接收消息，最后确认添加即可。</p><p><img src="../../images/quick-start-docx/image26.png"/></p><h2><strong>步骤六：创建并发布版本</strong></h2><p>确认完成后点击「创建版本」，然后根据要求输入版本相关信息并发布，个人账号无需审批，企业账号需要进行企业审批。</p><p><img src="../../images/quick-start-docx/image27.png"/></p><h2><strong>步骤七：飞书渠道验证确认</strong></h2><p>以上信息配置完成后，我们进入飞书客户端，如下图打开应用：</p><p><img src="../../images/quick-start-docx/image28.png"/></p><p>最后我们再进行简单尝试，如下图所示即代表配置成功。</p><p><img src="../../images/quick-start-docx/image29.png"/></p></section>
+<section class="doc-section"><h1><strong>模型配置修改</strong></h1><p>如果在OpenClaw个人AI助理使用时，需要切换模型，同样进入「智能体」列表，点击「配置」，进入模型切换菜单，完成模型配置修改点击「保存」即可。如下图所示：</p><p><img src="../../images/quick-start-docx/image30.png"/></p><p></p><p><br/></p></section>
+</main>
+<footer>
+<div>openclaw.club · OpenClaw 安装部署说明</div>
+<a href="/">返回首页 →</a>
+</footer>
 </div>
 </body>
 </html>

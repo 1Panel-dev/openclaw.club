@@ -233,6 +233,40 @@
         gap: 12px;
       }
 
+      .tool-link {
+        display: inline-flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+        margin-top: 2px;
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid rgba(18, 20, 22, 0.14);
+        background: #ffffff;
+        font-size: 0.94rem;
+        text-decoration: none;
+        width: fit-content;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+      }
+
+      .tool-link:hover {
+        transform: translateY(-1px);
+        border-color: rgba(255, 106, 61, 0.55);
+      }
+
+      .tool-icon {
+        width: 170px;
+        height: auto;
+        display: block;
+      }
+
+      .tool-copy {
+        max-width: 34ch;
+        color: var(--ink-soft);
+        font-size: 0.92rem;
+        line-height: 1.55;
+      }
+
       .qr-image {
         width: 160px;
         max-width: 100%;
@@ -338,6 +372,13 @@
             <h3>加入企业微信社群</h3>
             <p>扫码加入 1Panel &amp;&amp; OpenClaw 俱乐部企业微信群，获取安装答疑、更新通知与实战交流。</p>
             <img class="qr-image" src="https://resource.fit2cloud.com/1panel/openclaw/img/wechat.png" alt="OpenClaw 俱乐部企业微信二维码" />
+          </div>
+          <div class="card qr-card">
+            <h3>推荐工具</h3>
+            <a class="tool-link" href="https://1panel.cn" target="_blank" rel="noopener noreferrer">
+              <img class="tool-icon" src="https://1panel.cn/images/logo-blue.png" alt="1Panel 图标" />
+              <span class="tool-copy">用 1Panel 全面掌控你的 VPS，一键部署 OpenClaw 和网站。</span>
+            </a>
           </div>
         </section>
       </main>

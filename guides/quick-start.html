@@ -6,8 +6,8 @@
   <link rel="icon" type="image/svg+xml" href="https://openclaw.ai/favicon.svg" />
   <link rel="icon" type="image/png" sizes="32x32" href="https://openclaw.ai/favicon-32.png" />
   <link rel="apple-touch-icon" href="https://openclaw.ai/apple-touch-icon.png" />
-  <title>OpenClaw Quick Start Guide</title>
-  <meta name="description" content="Install OpenClaw with 1Panel, prepare your model API key, and connect Feishu in a practical step-by-step guide." />
+  <title>OpenClaw Installation and Deployment Guide</title>
+  <meta name="description" content="OpenClaw installation and deployment guide extracted from the provided DOCX." />
   <style>
     :root {
       color-scheme: light;
@@ -19,6 +19,8 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: "Merriweather", "Georgia", "Times New Roman", serif;
+      font-variant-numeric: lining-nums tabular-nums;
+      font-feature-settings: "lnum" 1, "tnum" 1;
       color: var(--ink);
       background: radial-gradient(circle at top left, #ffe7ce, #ffffff 55%), linear-gradient(135deg, #fffdf7, #f2f6fb);
       min-height: 100vh;
@@ -49,11 +51,91 @@
     }
 
     .content { background: #fff; border-radius: 24px; padding: 28px; box-shadow: 0 16px 32px rgba(18, 20, 22, 0.08); }
-    .content p, .content li { color: var(--ink-soft); font-size: 0.98rem; line-height: 1.75; }
-    .content p { margin-bottom: 12px; }
-    .content ul { margin: 6px 0 12px 20px; }
-    .content h1 { font-size: 1.45rem; margin: 22px 0 12px; color: var(--ink); }
-    .content h2 { font-size: 1.12rem; margin: 18px 0 10px; color: var(--ink); }
+    .doc-section { padding: 22px; }
+    .doc-intro p,
+    .doc-section p {
+      color: var(--ink-soft);
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-size: 1.03rem;
+      line-height: 1.75;
+      margin-bottom: 12px;
+      max-width: 78ch;
+      font-variant-numeric: normal;
+      font-feature-settings: normal;
+    }
+    .step-line {
+      color: var(--ink) !important;
+      font-weight: 700;
+      margin-top: 12px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      max-width: 96ch;
+    }
+    .step-index {
+      min-width: 52px;
+      color: var(--ink);
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      font-variant-numeric: lining-nums tabular-nums;
+      font-feature-settings: "lnum" 1, "tnum" 1;
+      font-weight: 800;
+    }
+    .step-title {
+      color: var(--ink);
+      font-weight: 700;
+    }
+    .topic-card {
+      border: 1px solid rgba(17, 19, 23, 0.1);
+      border-radius: 16px;
+      padding: 18px;
+      background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+      box-shadow: 0 10px 22px rgba(17, 19, 23, 0.05);
+      margin-bottom: 16px;
+    }
+    .topic-card:last-child { margin-bottom: 0; }
+    .topic-card .doc-h1 { margin-top: 0; }
+    .doc-h1 {
+      font-size: 1.45rem;
+      color: var(--ink);
+      margin: 18px 0 10px;
+      line-height: 1.35;
+      border-left: 4px solid var(--accent);
+      padding-left: 12px;
+    }
+    .doc-h2 {
+      font-size: 1.1rem;
+      color: var(--ink);
+      margin: 14px 0 8px;
+      font-weight: 700;
+    }
+    .doc-h3 {
+      font-size: 1rem;
+      color: var(--ink);
+      margin: 12px 0 6px;
+      font-weight: 700;
+    }
+    .doc-h1,
+    .doc-h2,
+    .doc-h3 {
+      font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      letter-spacing: 0.01em;
+    }
+    .kv-line {
+      background: #f7f9fc;
+      border: 1px solid rgba(17, 19, 23, 0.08);
+      border-radius: 10px;
+      padding: 8px 10px;
+      max-width: 96ch;
+    }
+    .guide-figure {
+      margin: 12px 0 18px;
+      padding: 8px;
+      border: 1px solid rgba(17, 19, 23, 0.08);
+      border-radius: 14px;
+      background: #fff;
+      max-width: 1020px;
+    }
     .content img { width: 100%; height: auto; border-radius: 12px; border: 1px solid rgba(17,19,23,.08); box-shadow: 0 8px 16px rgba(17,19,23,.08); margin: 10px 0 16px; }
     .code { background: #111317; color: #f5f6f7; border-radius: 12px; padding: 12px 14px; font-family: "JetBrains Mono", "SFMono-Regular", monospace; font-size: 0.88rem; line-height: 1.55; overflow-x: auto; margin: 8px 0 14px; white-space: pre-wrap; }
     footer { margin-top: 24px; color: var(--ink-soft); font-size: 0.92rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
@@ -77,101 +159,162 @@
 
   <main class="content">
     <section class="doc-intro">
-      <p>OpenClaw Quick Start</p>
-      <p>This guide walks through the complete path: install 1Panel on Linux, prepare your model API key, deploy OpenClaw, and connect Feishu. If you prefer Chinese, switch to the Chinese version from the top navigation.</p>
+<p>OpenClaw Installation and Deployment Guide</p>
+<p>This document mainly introduces the installation and deployment process of OpenClaw on VPS. We recommend using 1Panel, an open-source VPS control panel, for deployment and management, which makes the entire process simple and fast. After OpenClaw is installed, the Feishu channel docking configuration can also be quickly completed through the 1Panel.</p>
     </section>
-
     <section class="doc-section">
-      <h1>Environment Checklist</h1>
-      <ul>
-        <li>Linux server or client (Debian/RedHat family recommended)</li>
-        <li>x86_64 or aarch64 architecture</li>
-        <li>At least 2 GB available memory</li>
-        <li>Modern browser (Chrome, Firefox, Edge)</li>
-        <li>Internet access</li>
-        <li>One model API key (for example DeepSeek, Kimi, OpenAI, or your local model endpoint)</li>
-      </ul>
-      <p>1Panel installation docs: <a href="https://1panel.cn/docs/v2/installation/online_installation/">https://1panel.cn/docs/v2/installation/online_installation/</a></p>
-    </section>
-
-    <section class="doc-section">
-      <h1>Install 1Panel</h1>
-      <h2>Step 1: Switch to root</h2>
-      <pre class="code">sudo su -</pre>
-
-      <h2>Step 2: Run the online installer</h2>
-      <pre class="code">bash -c "$(curl -sSL https://resource.fit2cloud.com/1panel/package/v2/quick_start.sh)"</pre>
-
-      <h2>Step 3: Follow interactive prompts</h2>
-      <ul>
-        <li>Choose install directory (default is usually fine)</li>
-        <li>Install Docker if prompted</li>
-        <li>Configure panel port, security entry, and credentials</li>
-      </ul>
-      <p><img src="../images/quick-start-docx/image1.png" alt="1Panel setup prompts" /></p>
-      <p><img src="../images/quick-start-docx/image2.png" alt="1Panel login information" /></p>
-      <p><img src="../images/quick-start-docx/image3.png" alt="1Panel login page" /></p>
-      <p><img src="../images/quick-start-docx/image4.png" alt="1Panel public URL settings" /></p>
-    </section>
-
-    <section class="doc-section">
-      <h1>Prepare Model API Key</h1>
-      <p>This example uses DeepSeek. You can use any model provider supported by OpenClaw.</p>
-      <h2>Step 1: Register on DeepSeek platform</h2>
-      <p><a href="https://platform.deepseek.com/">https://platform.deepseek.com/</a></p>
-      <p><img src="../images/quick-start-docx/image6.png" alt="DeepSeek developer platform" /></p>
-
-      <h2>Step 2: Create API key</h2>
-      <p><img src="../images/quick-start-docx/image7.png" alt="DeepSeek API key" /></p>
-    </section>
-
-    <section class="doc-section">
-      <h1>Deploy OpenClaw in 1Panel</h1>
-      <h2>Step 1: Add model account</h2>
-      <p>Go to AI &gt; Agent, then add your model provider account first.</p>
-      <p><img src="../images/quick-start-docx/image8.png" alt="Add model account" /></p>
-
-      <h2>Step 2: Create the OpenClaw agent</h2>
-      <p>Set app version, WebUI port, Bridge port, and select your model account.</p>
-      <p><img src="../images/quick-start-docx/image9.png" alt="Create OpenClaw agent" /></p>
-      <p><img src="../images/quick-start-docx/image10.png" alt="OpenClaw parameters" /></p>
-      <p><img src="../images/quick-start-docx/image11.png" alt="Model selection" /></p>
-      <p><img src="../images/quick-start-docx/image12.png" alt="OpenClaw installed" /></p>
-
-      <h2>Step 3: Validate deployment</h2>
-      <p>Open the WebUI from the agent list and verify your assistant can respond normally.</p>
-      <p><img src="../images/quick-start-docx/image13.png" alt="OpenClaw entry" /></p>
-      <p><img src="../images/quick-start-docx/image14.png" alt="OpenClaw chat" /></p>
-    </section>
-
-    <section class="doc-section">
-      <h1>Configure Feishu Channel</h1>
-      <h2>Step 1: Create an app in Feishu Open Platform</h2>
-      <p><a href="https://open.feishu.cn/app?lang=en-US">https://open.feishu.cn/app?lang=en-US</a></p>
-      <p><img src="../images/quick-start-docx/image15.png" alt="Feishu open platform" /></p>
-
-      <h2>Step 2: Create bot and set permissions</h2>
-      <p>Create your bot, then import the required permission scopes in app settings.</p>
-      <p><img src="../images/quick-start-docx/image17.png" alt="Create Feishu bot" /></p>
-      <p><img src="../images/quick-start-docx/image20.png" alt="Feishu permissions" /></p>
-
-      <h2>Step 3: Fill credentials in 1Panel</h2>
-      <p>Get app credentials from Feishu and save them in the OpenClaw channel config.</p>
-      <p><img src="../images/quick-start-docx/image22.png" alt="Feishu credentials" /></p>
-      <p><img src="../images/quick-start-docx/image23.png" alt="1Panel Feishu config" /></p>
-
-      <h2>Step 4: Add event subscription and publish</h2>
-      <p>Configure event callback and subscribe to <code>im.message.receive_v1</code>, then publish a new app version.</p>
-      <p><img src="../images/quick-start-docx/image24.png" alt="Feishu events" /></p>
-      <p><img src="../images/quick-start-docx/image26.png" alt="Feishu message event" /></p>
-      <p><img src="../images/quick-start-docx/image27.png" alt="Feishu publish version" /></p>
-      <p><img src="../images/quick-start-docx/image29.png" alt="Feishu verification" /></p>
-    </section>
-
-    <section class="doc-section">
-      <h1>Switch Models Later</h1>
-      <p>You can switch model settings anytime from AI &gt; Agent &gt; Configuration in 1Panel.</p>
-      <p><img src="../images/quick-start-docx/image30.png" alt="Model config update" /></p>
+<p>Resource and Environment Preparation</p>
+<p>The following resource and environment preparations are required for the installation and deployment of OpenClaw:</p>
+<p>VPS Preparation</p>
+<p>Operating System: Supports mainstream Linux distributions (based on Debian/RedHat, including domestic operating systems)</p>
+<p>Server Architecture: x86_64, aarch64</p>
+<p>Memory Requirement: It is recommended to have more than 2GB of available memory</p>
+<p>Browser Requirement: Use modern browsers such as Chrome, FireFox, IE10+, Edge, etc.</p>
+<p>Network Requirement: Internet access is available</p>
+<p>Large Language Model API Key</p>
+<p>Public Models: API Keys of large language models such as DeepSeek, Kimi, OpenAI, etc.</p>
+<p>1Panel Installation and Deployment</p>
+<p>To install and deploy 1Panel, first log in to the Linux client or server, then follow the steps below for quick deployment:</p>
+<p>Step 1: Obtain root Privileges</p>
+<p>After logging in to the server, enter the following command to switch to root privileges first:</p>
+<p>Step 2: Execute the Online Installation Command</p>
+<p>Enter the following online installation script command to start the installation:</p>
+<p>Step 3: Specify the 1Panel Installation Directory</p>
+<p>The installation script will first prompt to set a specified installation directory. Press Enter to select the default directory if there are no special requirements:</p>
+<p>Set the 1Panel installation directory (default: /opt):</p>
+<p>Step 4: Complete Docker Installation</p>
+<p>After specifying the directory, the installation script will automatically detect whether Docker is installed on the current server. If not, it will ask whether to install it. Enter "y" here to confirm the installation:</p>
+<p>Docker not detected, install it? [y/n]: y</p>
+<p>Step 5: Configure Image Accelerator and Set Default Parameters</p>
+<p>After Docker is installed, the system will prompt whether to configure the image accelerator and then guide you to set the 1Panel port, secure access entry, panel user password, etc., as shown in the figure below. Configure these settings according to your actual situation, and ensure that the specified port is open.</p>
+<p><img src="../images/quick-start-en-docx/image1.png" alt="Guide image" /></p>
+<p>Step 6: Obtain 1Panel Login Information</p>
+<p>After completing all settings, the system will automatically print out the 1Panel login and access information, as shown in the figure below. Save this information for subsequent use.</p>
+<p><img src="../images/quick-start-en-docx/image2.png" alt="Guide image" /></p>
+<p>Step 7: Verify the Successful Deployment of 1Panel</p>
+<p>Enter the external address obtained in Step 6 into the browser to access the 1Panel login page. Enter the corresponding panel user and password to confirm that 1Panel has been successfully installed and deployed.</p>
+<p><img src="../images/quick-start-en-docx/image3.png" alt="Guide image" /></p>
+<p>Step 8: Set the 1Panel Access Address</p>
+<p>After entering the panel, switch to the "Panel Settings" page and set the default access address to the public network IP for 1Panel access, so that subsequently deployed applications can be accessed by clicking the "Jump" button.</p>
+<p><img src="../images/quick-start-en-docx/image4.png" alt="Guide image" /></p>
+<p>Step 9: Upgrade to the Latest Version V2.1.0 (Optional)</p>
+<p>For an existing 1Panel installation, log in to the panel and click the update button in the lower right corner to upgrade the current 1Panel to version v2.1.0.</p>
+<p><img src="../images/quick-start-en-docx/image5.png" alt="Guide image" /></p>
+<p>Large Language Model API Application</p>
+<p>You can check the list of models supported on the OpenClaw official website and obtain the API Key of the large language model respectively. This document takes DeepSeek as an example. For other public models and local models, prepare the relevant API Keys by referring to the corresponding documents on your own.</p>
+<p>Step 1: Register on the DeepSeek Developer Platform</p>
+<p>Access the DeepSeek Developer Platform via the link: https://platform.deepseek.com/, first complete personal real-name authentication and registration, and then make a recharge, as shown in the figure below.</p>
+<p><img src="../images/quick-start-en-docx/image6.png" alt="Guide image" /></p>
+<p>Step 2: Obtain the DeepSeek API Key</p>
+<p>As shown in the figure below, enter the API keys page, click "Create API key", and keep the generated API Key in a safe place for subsequent use after creation.</p>
+<p><img src="../images/quick-start-en-docx/image7.png" alt="Guide image" /></p>
+<p>OpenClaw Installation and Deployment</p>
+<p>The installation of OpenClaw is deployed based on the agent management of 1Panel, and the DeepSeek large model API key obtained in the previous step needs to be used during the deployment process. In 1Panel, the deployment of OpenClaw and the management of large model API key accounts are divided into two separate parts and decoupled from each other, mainly to facilitate the adjustment of model configurations for your OpenClaw personal assistant.</p>
+<p>Step 1: Add a Model Account</p>
+<p>Enter the "Agent" management menu under "AI" management, click to enter and switch to "Model Account" management first, then click "Add model account". Select the model provider and enter the model account information as required to complete the model account creation.</p>
+<p><img src="../images/quick-start-en-docx/image8.png" alt="Guide image" /></p>
+<p>Step 2: Create an Agent</p>
+<p>After preparing the model account, switch to the "Agent" page and click "Create Agent", then enter the relevant parameters as required, as shown in the figure below：</p>
+<p><img src="../images/quick-start-en-docx/image9.png" alt="Guide image" /></p>
+<p>The parameter definitions during agent creation are detailed as follows:</p>
+<p>Name: The default is openclaw, which can be customized as the container name.</p>
+<p>Application Version: Refers to the version of OpenClaw, e.g., the latest version 2026.2.9 as shown in the above figure by default.</p>
+<p>WebUI Port: The default port of OpenClaw is 18789, which can be customized and must be open.</p>
+<p>Bridge Port: The default port of OpenClaw is 18790, which can be customized and must be open.</p>
+<p>Model Provider: The currently supported models are shown in the figure. Select the DeepSeek model provider added just now. If the model account for the corresponding model provider has been added, the number of model accounts will be prompted directly.</p>
+<p><img src="../images/quick-start-en-docx/image10.png" alt="Guide image" /></p>
+<p>Other Model Parameters: After selecting the model provider, the system will automatically retrieve the maintained model accounts, as shown in the figure below. You can also check "Manual input" to enter the model information manually. If no model account has been created, click "Create model account" to complete the creation.</p>
+<p><img src="../images/quick-start-en-docx/image11.png" alt="Guide image" /></p>
+<p>Token: A token for the OpenClaw Web UI access address, which is automatically generated by the system for direct access in the follow-up.</p>
+<p>Other Parameters: Keep the default configurations for all other parameters.</p>
+<p>After configuring all the above parameters, click "Confirm" directly to start the installation of OpenClaw. The installation is completed when the prompt as shown in the figure below appears.</p>
+<p><img src="../images/quick-start-en-docx/image12.png" alt="Guide image" /></p>
+<p>Step 3: Verify the Successful Deployment of OpenClaw</p>
+<p>After the installation and deployment of OpenClaw are completed, enter the agent list page and click "WebUI" to jump directly to the OpenClaw page, as shown in the figure below.</p>
+<p><img src="../images/quick-start-en-docx/image13.png" alt="Guide image" /></p>
+<p>After entering the OpenClaw page, send a message and check if the AI assistant responds. A normal response, as shown in the figure below, indicates that OpenClaw has been successfully deployed.</p>
+<p><img src="../images/quick-start-en-docx/image14.png" alt="Guide image" /></p>
+<p>Feishu Channel Configuration</p>
+<p>Up to this point, OpenClaw has been fully deployed. Next, we will configure the Feishu channel. To configure the Feishu channel, we first need to create an available robot in Feishu. Follow the steps below to complete the configuration step by step.</p>
+<p>Note: A personal Feishu account is used in this guide. For enterprise accounts, version release and permission authorization require administrator approval, while other operation steps remain the same.</p>
+<p>Step 1: Create a Custom Enterprise App</p>
+<p>First, log in to Feishu and enter the Feishu Open Platform (link: https://open.feishu.cn/app), then access the "Developer Console" and select "Custom Apps", click "Create Custom App", as shown in the figure below.</p>
+<p><img src="../images/quick-start-en-docx/image15.png" alt="Guide image" /></p>
+<p>As shown in the figure below, enter the relevant app name and basic information as required and click "Create".</p>
+<p><img src="../images/quick-start-en-docx/image16.png" alt="Guide image" /></p>
+<p>Step 2: Create a Bot</p>
+<p>As shown in the figure below, click to create a bot to complete the bot creation process.</p>
+<p><img src="../images/quick-start-en-docx/image17.png" alt="Guide image" /></p>
+<p>After entering the bot page, click the edit button after bot configuration to define the bot name, as shown in the figure below：</p>
+<p><img src="../images/quick-start-en-docx/image18.png" alt="Guide image" /></p>
+<p>Step 3: Permission Configuration</p>
+<p>After creating the bot, click to enter "Permissions &amp; Scopes" and then click "Batch import/export scopes".</p>
+<p><img src="../images/quick-start-en-docx/image19.png" alt="Guide image" /></p>
+<p>Click "Batch import/export scopes", clear the default permission configuration information, copy and paste the permission authorization script as shown below, and click "Save".</p>
+<pre class="code">{
+"scopes": {
+"tenant": [
+"aily:file:read",
+"aily:file:write",
+"application:application.app_message_stats.overview:readonly",
+"application:application:self_manage",
+"application:bot.menu:write",
+"cardkit:card:write",
+"contact:contact.base:readonly",
+"contact:user.employee_id:readonly",
+"corehr:file:download",
+"docs:document.content:read",
+"event:ip_list",
+"im:chat",
+"im:chat.access_event.bot_p2p_chat:read",
+"im:chat.members:bot_access",
+"im:message",
+"im:message.group_at_msg:readonly",
+"im:message.group_msg",
+"im:message.p2p_msg:readonly",
+"im:message:readonly",
+"im:message:send_as_bot",
+"im:resource",
+"sheets:spreadsheet",
+"wiki:wiki:readonly"
+],
+"user": [
+"aily:file:read",
+"aily:file:write",
+"contact:contact.base:readonly",
+"im:chat.access_event.bot_p2p_chat:read"
+]
+}
+}</pre>
+<p>The effect after pasting is shown in the figure below：</p>
+<p><img src="../images/quick-start-en-docx/image20.png" alt="Guide image" /></p>
+<p>Click "Next, Review New Scopes" and finally ensure that all permissions are enabled. For personal accounts, confirm the permissions by yourself; for enterprise accounts, administrator review is required. Ensure all permissions are enabled as shown in the figure below：</p>
+<p><img src="../images/quick-start-en-docx/image21.png" alt="Guide image" /></p>
+<p>Step 4: Obtain Credentials and Configure in 1Panel</p>
+<p>Enter the Feishu platform and obtain the app credentials in "Credentials &amp; Basic Info", as shown in the figure below：</p>
+<p><img src="../images/quick-start-en-docx/image22.png" alt="Guide image" /></p>
+<p>After obtaining the credentials, enter the "Configuration" page of "Agent" in 1Panel, complete the Feishu chat channel configuration, and click "Save", as shown in the figure below：</p>
+<p><img src="../images/quick-start-en-docx/image23.png" alt="Guide image" /></p>
+<p>Step 5: Create Events and Callbacks</p>
+<p>As shown in the figure below, enter the "Events &amp; Callbacks" menu and complete the subscription method setting and event addition respectively.</p>
+<p><img src="../images/quick-start-en-docx/image24.png" alt="Guide image" /></p>
+<p>Subscription Method Setting</p>
+<p>Select the persistent connection subscription method as shown in the figure below：</p>
+<p><img src="../images/quick-start-en-docx/image25.png" alt="Guide image" /></p>
+<p>Add Events:</p>
+<p>Enter "im.message.receive_v1" to search, check "Receive messages" based on "App-based Subscription", and finally confirm the addition.</p>
+<p><img src="../images/quick-start-en-docx/image26.png" alt="Guide image" /></p>
+<p>Step 6: Create and Release a Version</p>
+<p>After confirmation, click "Create Version", then enter the relevant version information as required and release it. No approval is required for personal accounts, while enterprise accounts need enterprise approval.</p>
+<p><img src="../images/quick-start-en-docx/image27.png" alt="Guide image" /></p>
+<p>Step 7: Verify the Feishu Channel Configuration</p>
+<p>After completing all the above configurations, open the app in the Feishu client as shown in the figure below：</p>
+<p><img src="../images/quick-start-en-docx/image28.png" alt="Guide image" /></p>
+<p>Finally, perform a simple test. The prompt as shown in the figure below indicates that the configuration is successful.</p>
+<p><img src="../images/quick-start-en-docx/image29.png" alt="Guide image" /></p>
+<p>Model Configuration Modification</p>
+<p>If you need to switch the model when using the OpenClaw personal AI assistant, also enter the "Agent" list, click "Configuration", enter the model switching menu, complete the model configuration modification and click "Save", as shown in the figure below：</p>
+<p><img src="../images/quick-start-en-docx/image30.png" alt="Guide image" /></p>
     </section>
   </main>
 
@@ -180,5 +323,110 @@
     <a href="/">Back to Home →</a>
   </footer>
 </div>
+<script>
+  (function () {
+    const sectionTitles = new Set([
+      "Resource and Environment Preparation",
+      "1Panel Installation and Deployment",
+      "Large Language Model API Application",
+      "OpenClaw Installation and Deployment",
+      "Feishu Channel Configuration",
+      "Model Configuration Modification"
+    ]);
+
+    const subTitles = new Set([
+      "VPS Preparation",
+      "Large Language Model API Key",
+      "Local Models",
+      "1Panel v2.1.0 Installation and Deployment",
+      "Subscription Method Setting",
+      "Add Events:"
+    ]);
+
+    const kvPrefix = [
+      "Name:",
+      "Application Version:",
+      "WebUI Port:",
+      "Bridge Port:",
+      "Model Provider:",
+      "Other Model Parameters:",
+      "Token:",
+      "Other Parameters:"
+    ];
+
+    document.querySelectorAll('.doc-section p').forEach((p) => {
+      const text = (p.textContent || '').trim();
+      if (!text) return;
+
+      if (p.children.length === 1 && p.firstElementChild && p.firstElementChild.tagName === 'IMG') {
+        const figure = document.createElement('figure');
+        figure.className = 'guide-figure';
+        figure.appendChild(p.firstElementChild);
+        p.replaceWith(figure);
+        return;
+      }
+
+      if (sectionTitles.has(text)) {
+        const h = document.createElement('h1');
+        h.className = 'doc-h1';
+        h.textContent = text;
+        p.replaceWith(h);
+        return;
+      }
+
+      if (subTitles.has(text)) {
+        const h = document.createElement('h3');
+        h.className = 'doc-h3';
+        h.textContent = text;
+        p.replaceWith(h);
+        return;
+      }
+
+      if (/^Step\s+\d+:/.test(text)) {
+        p.classList.add('step-line');
+        const stepMatch = text.match(/^(Step\s+\d+:)\s*(.*)$/);
+        if (stepMatch) {
+          const stepIndex = document.createElement('span');
+          stepIndex.className = 'step-index';
+          stepIndex.textContent = stepMatch[1];
+
+          const stepTitle = document.createElement('span');
+          stepTitle.className = 'step-title';
+          stepTitle.textContent = stepMatch[2];
+
+          p.textContent = '';
+          p.appendChild(stepIndex);
+          p.appendChild(stepTitle);
+        }
+      }
+
+      if (kvPrefix.some((prefix) => text.startsWith(prefix))) {
+        p.classList.add('kv-line');
+      }
+
+      if (text.includes('http://') || text.includes('https://')) {
+        p.innerHTML = p.innerHTML.replace(
+          /(https?:\/\/[^\s<]+)/g,
+          '<a href="$1" target="_blank" rel="noopener noreferrer">$1<\/a>'
+        );
+      }
+    });
+
+    const docSection = document.querySelector('.doc-section');
+    if (docSection) {
+      let currentCard = null;
+      Array.from(docSection.children).forEach((node) => {
+        if (node.classList && node.classList.contains('doc-h1')) {
+          currentCard = document.createElement('section');
+          currentCard.className = 'topic-card';
+          docSection.insertBefore(currentCard, node);
+        }
+        if (currentCard) {
+          currentCard.appendChild(node);
+        }
+      });
+    }
+  })();
+</script>
 </body>
 </html>
